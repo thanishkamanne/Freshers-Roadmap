@@ -1,0 +1,1230 @@
+import java.util.Scanner;
+
+/**
+ * ============================================================
+ *   FRESHERS ACADEMIC ROADMAP - Java Console Application
+ *   Simulates a planner for first-year engineering students
+ *   Implements core DSA concepts throughout the system
+ * ============================================================
+ */
+public class FreshersAcademicRoadmap1 {
+
+    static Scanner sc = new Scanner(System.in);
+    static UserHashTable userTable = new UserHashTable(20);
+    static User currentUser = null;
+
+    public static void main(String[] args) {
+        loadDemoData();
+        System.out.println("==========================================");
+        System.out.println("   FRESHERS ACADEMIC ROADMAP SYSTEM");
+        System.out.println("==========================================");
+        mainMenu();
+    }
+
+    // ─────────────────────────────────────────────
+    //  DEMO DATA LOADER
+    // ─────────────────────────────────────────────
+    static void loadDemoData() {
+        // Pre-register two demo users
+        User u1 = new User("alice", "alice123", "CSE", 1);
+        u1.loadDefaultSubjects();
+        userTable.insert(u1);
+
+        User u2 = new User("bob", "bob123", "ECE", 2);
+        u2.loadDefaultSubjects();
+        userTable.insert(u2);
+    }
+
+    // ─────────────────────────────────────────────
+    //  MAIN MENU
+    // ─────────────────────────────────────────────
+    static void mainMenu() {
+        while (true) {
+            System.out.println("\n--- MAIN MENU ---");
+            System.out.println("1. Sign Up");
+            System.out.println("2. Login");
+            System.out.println("3. Exit");
+            System.out.print("Choice: ");
+            int ch = readInt();
+            switch (ch) {
+                case 1: signUp(); break;
+                case 2: login(); break;
+                case 3: System.out.println("Goodbye!"); System.exit(0);
+                default: System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    static void signUp() {
+        System.out.print("Enter username: ");
+        String uname = sc.next();
+        if (userTable.find(uname) != null) {
+            System.out.println("Username already exists.");
+            return;
+        }
+        System.out.print("Enter password: ");
+        String pwd = sc.next();
+        System.out.println("Select Branch: 1.CSE  2.ECE  3.MECH  4.CIVIL  5.EEE");
+        int b = readInt();
+        String[] branches = {"CSE", "ECE", "MECH", "CIVIL", "EEE"};
+        String branch = (b >= 1 && b <= 5) ? branches[b - 1] : "CSE";
+        System.out.print("Semester (1-8): ");
+        int sem = readInt();
+        User user = new User(uname, pwd, branch, sem);
+        user.loadDefaultSubjects();
+        userTable.insert(user);
+        System.out.println("Registered successfully! Please login.");
+    }
+
+    static void login() {
+        System.out.print("Username: ");
+        String uname = sc.next();
+        System.out.print("Password: ");
+        String pwd = sc.next();
+        User user = userTable.find(uname);
+        if (user == null || !user.password.equals(pwd)) {
+            System.out.println("Invalid credentials.");
+            return;
+        }
+        currentUser = user;
+        System.out.println("Welcome, " + currentUser.username + "! [" + currentUser.branch + " | Sem " + currentUser.semester + "]");
+        dashboardMenu();
+    }
+
+    // ─────────────────────────────────────────────
+    //  DASHBOARD MENU (post-login)
+    // ─────────────────────────────────────────────
+    static void dashboardMenu() {
+        while (true) {
+            System.out.println("\n========== DASHBOARD ==========");
+            System.out.println("XP: " + currentUser.xp + "  |  Badges: " + currentUser.badges);
+            System.out.println("1.  View Subjects");
+            System.out.println("2.  View Topics for a Subject");
+            System.out.println("3.  Mark Topic as Studied");
+            System.out.println("4.  View Study History (Stack)");
+            System.out.println("5.  Upcoming Tasks (Queue)");
+            System.out.println("6.  Add Upcoming Task");
+            System.out.println("7.  Priority Topics (Heap)");
+            System.out.println("8.  Add Priority Topic");
+            System.out.println("9.  Study Resources (Circular List)");
+            System.out.println("10. Search Subject");
+            System.out.println("11. Sort Subjects");
+            System.out.println("12. Infix → Postfix Converter");
+            System.out.println("13. Symbol Balance Checker");
+            System.out.println("14. Career Explorer");
+            System.out.println("15. Exam Countdown");
+            System.out.println("16. Progress Tracker");
+            System.out.println("17. Logout");
+            System.out.print("Choice: ");
+            int ch = readInt();
+            switch (ch) {
+                case 1:  viewSubjects(); break;
+                case 2:  viewTopics(); break;
+                case 3:  markTopicStudied(); break;
+                case 4:  viewStudyHistory(); break;
+                case 5:  viewUpcomingTasks(); break;
+                case 6:  addUpcomingTask(); break;
+                case 7:  viewPriorityTopics(); break;
+                case 8:  addPriorityTopic(); break;
+                case 9:  viewResources(); break;
+                case 10: searchSubject(); break;
+                case 11: sortSubjectsMenu(); break;
+                case 12: infixToPostfix(); break;
+                case 13: symbolBalance(); break;
+                case 14: careerExplorer(); break;
+                case 15: examCountdown(); break;
+                case 16: progressTracker(); break;
+                case 17: currentUser = null; System.out.println("Logged out."); return;
+                default: System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  FEATURE 1: VIEW SUBJECTS  (Singly Linked List)
+    // ─────────────────────────────────────────────────────
+    static void viewSubjects() {
+        System.out.println("\n--- SUBJECTS [" + currentUser.branch + " | Sem " + currentUser.semester + "] ---");
+        SubjectNode cur = currentUser.subjectList.head;
+        int i = 1;
+        if (cur == null) { System.out.println("No subjects found."); return; }
+        while (cur != null) {
+            System.out.println(i++ + ". " + cur.subject.name + " | Progress: " + cur.subject.progress + "%");
+            cur = cur.next;
+        }
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  FEATURE 2: VIEW TOPICS  (Doubly Linked List)
+    // ─────────────────────────────────────────────────────
+    static void viewTopics() {
+        viewSubjects();
+        System.out.print("Select subject number: ");
+        int idx = readInt();
+        Subject sub = currentUser.subjectList.getByIndex(idx - 1);
+        if (sub == null) { System.out.println("Invalid selection."); return; }
+        System.out.println("\n--- TOPICS: " + sub.name + " ---");
+        TopicNode cur = sub.topics.head;
+        int i = 1;
+        while (cur != null) {
+            String status = cur.topic.studied ? "[DONE]" : "[ ]  ";
+            System.out.println(i++ + ". " + status + " " + cur.topic.name);
+            cur = cur.next;
+        }
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  FEATURE 3: MARK TOPIC STUDIED  (Stack push for history)
+    // ─────────────────────────────────────────────────────
+    static void markTopicStudied() {
+        viewSubjects();
+        System.out.print("Select subject number: ");
+        int sIdx = readInt();
+        Subject sub = currentUser.subjectList.getByIndex(sIdx - 1);
+        if (sub == null) { System.out.println("Invalid."); return; }
+
+        System.out.println("Topics in " + sub.name + ":");
+        TopicNode cur = sub.topics.head;
+        int i = 1;
+        while (cur != null) {
+            System.out.println(i++ + ". " + cur.topic.name + (cur.topic.studied ? " [done]" : ""));
+            cur = cur.next;
+        }
+        System.out.print("Select topic number: ");
+        int tIdx = readInt();
+        Topic topic = sub.topics.getByIndex(tIdx - 1);
+        if (topic == null) { System.out.println("Invalid."); return; }
+
+        topic.studied = true;
+        sub.updateProgress();
+        currentUser.xp += 10;
+        currentUser.checkBadge();
+
+        // Push to study history stack
+        currentUser.studyHistory.push(sub.name + " > " + topic.name);
+        System.out.println("Marked as studied! +10 XP. Total XP: " + currentUser.xp);
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  FEATURE 4: STUDY HISTORY  (Stack ADT - Linked List)
+    // ─────────────────────────────────────────────────────
+    static void viewStudyHistory() {
+        System.out.println("\n--- STUDY HISTORY (Last In, First Out) ---");
+        if (currentUser.studyHistory.isEmpty()) {
+            System.out.println("No history yet."); return;
+        }
+        // Peek at top without popping
+        System.out.println("Most recent: " + currentUser.studyHistory.peek());
+        System.out.println("All history (top to bottom):");
+        // Use a temp stack to display all
+        StudyStack temp = new StudyStack();
+        while (!currentUser.studyHistory.isEmpty()) {
+            String item = currentUser.studyHistory.pop();
+            System.out.println("  - " + item);
+            temp.push(item);
+        }
+        // Restore stack
+        while (!temp.isEmpty()) currentUser.studyHistory.push(temp.pop());
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  FEATURE 5 & 6: UPCOMING TASKS  (Queue ADT)
+    // ─────────────────────────────────────────────────────
+    static void viewUpcomingTasks() {
+        System.out.println("\n--- UPCOMING TASKS (FIFO Queue) ---");
+        if (currentUser.taskQueue.isEmpty()) {
+            System.out.println("No upcoming tasks."); return;
+        }
+        currentUser.taskQueue.display();
+    }
+
+    static void addUpcomingTask() {
+        System.out.print("Enter task description: ");
+        sc.nextLine();
+        String task = sc.nextLine();
+        currentUser.taskQueue.enqueue(task);
+        System.out.println("Task added to queue.");
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  FEATURE 7 & 8: PRIORITY TOPICS  (Binary Min-Heap)
+    // ─────────────────────────────────────────────────────
+    static void viewPriorityTopics() {
+        System.out.println("\n--- PRIORITY TOPICS (Min-Heap by priority) ---");
+        if (currentUser.priorityHeap.isEmpty()) {
+            System.out.println("No priority topics."); return;
+        }
+        currentUser.priorityHeap.display();
+    }
+
+    static void addPriorityTopic() {
+        System.out.print("Topic name: ");
+        sc.nextLine();
+        String name = sc.nextLine();
+        System.out.print("Priority (1=highest, 10=lowest): ");
+        int pri = readInt();
+        currentUser.priorityHeap.insert(new PriorityItem(name, pri));
+        System.out.println("Priority topic added.");
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  FEATURE 9: STUDY RESOURCES  (Circular Linked List)
+    // ─────────────────────────────────────────────────────
+    static void viewResources() {
+        System.out.println("\n--- STUDY RESOURCES (Circular List - rotating) ---");
+        currentUser.resources.displayNext(3);
+        System.out.println("(Resources rotate in circular fashion)");
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  FEATURE 10: SEARCH SUBJECT (Linear + Binary Search)
+    // ─────────────────────────────────────────────────────
+    static void searchSubject() {
+        System.out.println("\n--- SEARCH SUBJECT ---");
+        System.out.println("1. Linear Search  2. Binary Search");
+        System.out.print("Choose: ");
+        int method = readInt();
+        System.out.print("Enter subject name to search: ");
+        sc.nextLine();
+        String query = sc.nextLine().trim().toLowerCase();
+
+        // Convert linked list to array for searching
+        String[] names = currentUser.subjectList.toNameArray();
+
+        if (method == 1) {
+            // LINEAR SEARCH - O(n), works on unsorted data
+            int idx = linearSearch(names, query);
+            if (idx == -1) System.out.println("Subject not found (Linear Search).");
+            else System.out.println("Found: '" + names[idx] + "' at position " + (idx + 1) + " (Linear Search)");
+        } else {
+            // BINARY SEARCH - O(log n), requires sorted array
+            String[] sorted = names.clone();
+            bubbleSortArr(sorted); // sort first
+            int idx = binarySearch(sorted, query);
+            if (idx == -1) System.out.println("Subject not found (Binary Search).");
+            else System.out.println("Found: '" + sorted[idx] + "' (Binary Search on sorted list)");
+        }
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  FEATURE 11: SORT SUBJECTS
+    // ─────────────────────────────────────────────────────
+    static void sortSubjectsMenu() {
+        System.out.println("\n--- SORT SUBJECTS ---");
+        System.out.println("1. Bubble Sort  2. Selection Sort  3. Insertion Sort");
+        System.out.println("4. Merge Sort   5. Quick Sort");
+        System.out.print("Choose: ");
+        int ch = readInt();
+        String[] names = currentUser.subjectList.toNameArray();
+        String[] arr = names.clone();
+
+        switch (ch) {
+            case 1: bubbleSortArr(arr);    System.out.println("Sorted (Bubble Sort):"); break;
+            case 2: selectionSortArr(arr); System.out.println("Sorted (Selection Sort):"); break;
+            case 3: insertionSortArr(arr); System.out.println("Sorted (Insertion Sort):"); break;
+            case 4: mergeSort(arr, 0, arr.length - 1); System.out.println("Sorted (Merge Sort):"); break;
+            case 5: quickSort(arr, 0, arr.length - 1); System.out.println("Sorted (Quick Sort):"); break;
+            default: System.out.println("Invalid."); return;
+        }
+        for (int i = 0; i < arr.length; i++)
+            System.out.println("  " + (i + 1) + ". " + arr[i]);
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  FEATURE 12: INFIX → POSTFIX  (Stack Application)
+    // ─────────────────────────────────────────────────────
+    static void infixToPostfix() {
+        System.out.print("\nEnter infix expression (e.g. A+B*C): ");
+        sc.nextLine();
+        String expr = sc.nextLine().trim();
+        String result = convertInfixToPostfix(expr);
+        System.out.println("Postfix: " + result);
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  FEATURE 13: SYMBOL BALANCE  (Stack Application)
+    // ─────────────────────────────────────────────────────
+    static void symbolBalance() {
+        System.out.print("\nEnter expression to check balance: ");
+        sc.nextLine();
+        String expr = sc.nextLine().trim();
+        boolean balanced = checkBalance(expr);
+        System.out.println(balanced ? "Symbols are BALANCED." : "Symbols are NOT balanced!");
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  FEATURE 14: CAREER EXPLORER
+    // ─────────────────────────────────────────────────────
+    static void careerExplorer() {
+        System.out.println("\n--- CAREER EXPLORER for " + currentUser.branch + " ---");
+        ResourceHashTable careers = new ResourceHashTable(10);
+        careers.put("CSE",   "Software Engineer, Data Scientist, ML Engineer, DevOps, Cybersecurity");
+        careers.put("ECE",   "VLSI Engineer, Embedded Systems, IoT Developer, Signal Processing");
+        careers.put("MECH",  "Design Engineer, CAD/CAM, Automotive, Aerospace, Manufacturing");
+        careers.put("CIVIL", "Structural Engineer, Urban Planner, Construction Manager, Surveyor");
+        careers.put("EEE",   "Power Systems, Control Systems, Electrical Design, Smart Grid");
+        String paths = careers.get(currentUser.branch);
+        System.out.println("Career paths: " + (paths != null ? paths : "Explore general engineering roles."));
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  FEATURE 15: EXAM COUNTDOWN
+    // ─────────────────────────────────────────────────────
+    static void examCountdown() {
+        System.out.println("\n--- EXAM COUNTDOWN (Priority Queue) ---");
+        ExamHeap exams = new ExamHeap(10);
+        exams.insert(new PriorityItem("Mid Semester Exam", 15));
+        exams.insert(new PriorityItem("Lab Internal",       7));
+        exams.insert(new PriorityItem("End Semester Exam",  45));
+        exams.insert(new PriorityItem("Quiz 1",             3));
+        System.out.println("Upcoming exams (sorted by days remaining):");
+        exams.display();
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  FEATURE 16: PROGRESS TRACKER
+    // ─────────────────────────────────────────────────────
+    static void progressTracker() {
+        System.out.println("\n--- PROGRESS TRACKER ---");
+        SubjectNode cur = currentUser.subjectList.head;
+        int total = 0, count = 0;
+        while (cur != null) {
+            System.out.println("  " + cur.subject.name + ": " + progressBar(cur.subject.progress));
+            total += cur.subject.progress;
+            count++;
+            cur = cur.next;
+        }
+        if (count > 0)
+            System.out.println("Overall: " + (total / count) + "% complete");
+        System.out.println("XP Earned: " + currentUser.xp + "  Badges: " + currentUser.badges);
+    }
+
+    static String progressBar(int pct) {
+        int filled = pct / 10;
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < 10; i++) sb.append(i < filled ? "#" : "-");
+        sb.append("] ").append(pct).append("%");
+        return sb.toString();
+    }
+
+    // ==========================================================
+    //  SEARCHING ALGORITHMS
+    // ==========================================================
+
+    /**
+     * LINEAR SEARCH - O(n)
+     * Scans each element sequentially until target is found.
+     * Works on unsorted data.
+     */
+    static int linearSearch(String[] arr, String target) {
+        for (int i = 0; i < arr.length; i++)
+            if (arr[i].toLowerCase().equals(target)) return i;
+        return -1;
+    }
+
+    /**
+     * BINARY SEARCH - O(log n)
+     * Repeatedly halves the search space.
+     * Requires sorted input.
+     */
+    static int binarySearch(String[] arr, String target) {
+        int lo = 0, hi = arr.length - 1;
+        while (lo <= hi) {
+            int mid = (lo + hi) / 2;
+            int cmp = arr[mid].toLowerCase().compareTo(target);
+            if (cmp == 0) return mid;
+            else if (cmp < 0) lo = mid + 1;
+            else hi = mid - 1;
+        }
+        return -1;
+    }
+
+    // ==========================================================
+    //  SORTING ALGORITHMS
+    // ==========================================================
+
+    /**
+     * BUBBLE SORT - O(n²)
+     * Repeatedly swaps adjacent elements if out of order.
+     */
+    static void bubbleSortArr(String[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n - 1; i++)
+            for (int j = 0; j < n - i - 1; j++)
+                if (arr[j].compareToIgnoreCase(arr[j + 1]) > 0) {
+                    String tmp = arr[j]; arr[j] = arr[j + 1]; arr[j + 1] = tmp;
+                }
+    }
+
+    /**
+     * SELECTION SORT - O(n²)
+     * Finds minimum element and places it at the beginning each pass.
+     */
+    static void selectionSortArr(String[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n - 1; i++) {
+            int minIdx = i;
+            for (int j = i + 1; j < n; j++)
+                if (arr[j].compareToIgnoreCase(arr[minIdx]) < 0) minIdx = j;
+            String tmp = arr[minIdx]; arr[minIdx] = arr[i]; arr[i] = tmp;
+        }
+    }
+
+    /**
+     * INSERTION SORT - O(n²)
+     * Builds sorted portion one element at a time by inserting into correct position.
+     */
+    static void insertionSortArr(String[] arr) {
+        int n = arr.length;
+        for (int i = 1; i < n; i++) {
+            String key = arr[i];
+            int j = i - 1;
+            while (j >= 0 && arr[j].compareToIgnoreCase(key) > 0) {
+                arr[j + 1] = arr[j]; j--;
+            }
+            arr[j + 1] = key;
+        }
+    }
+
+    /**
+     * MERGE SORT - O(n log n)
+     * Divide-and-conquer: splits array, sorts halves, merges them.
+     */
+    static void mergeSort(String[] arr, int left, int right) {
+        if (left < right) {
+            int mid = (left + right) / 2;
+            mergeSort(arr, left, mid);
+            mergeSort(arr, mid + 1, right);
+            merge(arr, left, mid, right);
+        }
+    }
+
+    static void merge(String[] arr, int left, int mid, int right) {
+        int n1 = mid - left + 1, n2 = right - mid;
+        String[] L = new String[n1], R = new String[n2];
+        for (int i = 0; i < n1; i++) L[i] = arr[left + i];
+        for (int j = 0; j < n2; j++) R[j] = arr[mid + 1 + j];
+        int i = 0, j = 0, k = left;
+        while (i < n1 && j < n2)
+            arr[k++] = (L[i].compareToIgnoreCase(R[j]) <= 0) ? L[i++] : R[j++];
+        while (i < n1) arr[k++] = L[i++];
+        while (j < n2) arr[k++] = R[j++];
+    }
+
+    /**
+     * QUICK SORT - O(n log n) average
+     * Picks pivot, partitions array so smaller elements are left, larger are right.
+     */
+    static void quickSort(String[] arr, int low, int high) {
+        if (low < high) {
+            int pi = partition(arr, low, high);
+            quickSort(arr, low, pi - 1);
+            quickSort(arr, pi + 1, high);
+        }
+    }
+
+    static int partition(String[] arr, int low, int high) {
+        String pivot = arr[high];
+        int i = low - 1;
+        for (int j = low; j < high; j++) {
+            if (arr[j].compareToIgnoreCase(pivot) <= 0) {
+                i++;
+                String tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+            }
+        }
+        String tmp = arr[i + 1]; arr[i + 1] = arr[high]; arr[high] = tmp;
+        return i + 1;
+    }
+
+    // ==========================================================
+    //  STACK APPLICATION: INFIX TO POSTFIX
+    // ==========================================================
+
+    /**
+     * Uses a CharStack (Stack ADT) to convert infix to postfix.
+     * Operators are pushed/popped based on precedence.
+     */
+    static String convertInfixToPostfix(String expr) {
+        CharStack stack = new CharStack(100);
+        StringBuilder output = new StringBuilder();
+        for (char c : expr.toCharArray()) {
+            if (Character.isLetterOrDigit(c)) {
+                output.append(c);
+            } else if (c == '(') {
+                stack.push(c);
+            } else if (c == ')') {
+                while (!stack.isEmpty() && stack.peek() != '(')
+                    output.append(stack.pop());
+                if (!stack.isEmpty()) stack.pop(); // remove '('
+            } else if (isOperator(c)) {
+                while (!stack.isEmpty() && precedence(stack.peek()) >= precedence(c))
+                    output.append(stack.pop());
+                stack.push(c);
+            }
+        }
+        while (!stack.isEmpty()) output.append(stack.pop());
+        return output.toString();
+    }
+
+    static boolean isOperator(char c) {
+        return c == '+' || c == '-' || c == '*' || c == '/' || c == '^';
+    }
+
+    static int precedence(char c) {
+        if (c == '^') return 3;
+        if (c == '*' || c == '/') return 2;
+        if (c == '+' || c == '-') return 1;
+        return 0;
+    }
+
+    // ==========================================================
+    //  STACK APPLICATION: SYMBOL BALANCE CHECKER
+    // ==========================================================
+
+    /**
+     * Uses CharStack to verify matching brackets/parentheses.
+     */
+    static boolean checkBalance(String expr) {
+        CharStack stack = new CharStack(100);
+        for (char c : expr.toCharArray()) {
+            if (c == '(' || c == '[' || c == '{') stack.push(c);
+            else if (c == ')' || c == ']' || c == '}') {
+                if (stack.isEmpty()) return false;
+                char top = stack.pop();
+                if ((c == ')' && top != '(') ||
+                    (c == ']' && top != '[') ||
+                    (c == '}' && top != '{')) return false;
+            }
+        }
+        return stack.isEmpty();
+    }
+
+    // ─────────────────────────────────────────────────────
+    //  UTILITY
+    // ─────────────────────────────────────────────────────
+    static int readInt() {
+        try { return Integer.parseInt(sc.next().trim()); }
+        catch (NumberFormatException e) { return -1; }
+    }
+
+
+    // =====================================================================
+    // ░░░░░░░░░░░░░░░  DATA STRUCTURES  ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+    // =====================================================================
+
+    // ==========================================================
+    //  TOPIC (Node data for Doubly Linked List)
+    // ==========================================================
+    static class Topic {
+        String name;
+        boolean studied;
+        Topic(String name) { this.name = name; this.studied = false; }
+    }
+
+    // ==========================================================
+    //  DOUBLY LINKED LIST of Topics
+    //  Each node has both next and prev pointers.
+    // ==========================================================
+    static class TopicNode {
+        Topic topic;
+        TopicNode next, prev;
+        TopicNode(Topic t) { this.topic = t; }
+    }
+
+    static class TopicDoublyList {
+        TopicNode head, tail;
+
+        // Add to end
+        void addLast(Topic t) {
+            TopicNode node = new TopicNode(t);
+            if (head == null) { head = tail = node; return; }
+            tail.next = node;
+            node.prev = tail;
+            tail = node;
+        }
+
+        Topic getByIndex(int idx) {
+            TopicNode cur = head; int i = 0;
+            while (cur != null) {
+                if (i == idx) return cur.topic;
+                i++; cur = cur.next;
+            }
+            return null;
+        }
+
+        int size() {
+            int c = 0; TopicNode cur = head;
+            while (cur != null) { c++; cur = cur.next; }
+            return c;
+        }
+
+        int studiedCount() {
+            int c = 0; TopicNode cur = head;
+            while (cur != null) { if (cur.topic.studied) c++; cur = cur.next; }
+            return c;
+        }
+    }
+
+    // ==========================================================
+    //  SUBJECT
+    // ==========================================================
+    static class Subject {
+        String name;
+        int progress; // percentage
+        TopicDoublyList topics;
+
+        Subject(String name) {
+            this.name = name;
+            this.progress = 0;
+            this.topics = new TopicDoublyList();
+        }
+
+        void updateProgress() {
+            int total = topics.size();
+            if (total == 0) { progress = 0; return; }
+            progress = (topics.studiedCount() * 100) / total;
+        }
+    }
+
+    // ==========================================================
+    //  SINGLY LINKED LIST of Subjects
+    //  Each node has only a next pointer.
+    // ==========================================================
+    static class SubjectNode {
+        Subject subject;
+        SubjectNode next;
+        SubjectNode(Subject s) { this.subject = s; }
+    }
+
+    static class SubjectSinglyList {
+        SubjectNode head;
+
+        void addLast(Subject s) {
+            SubjectNode node = new SubjectNode(s);
+            if (head == null) { head = node; return; }
+            SubjectNode cur = head;
+            while (cur.next != null) cur = cur.next;
+            cur.next = node;
+        }
+
+        Subject getByIndex(int idx) {
+            SubjectNode cur = head; int i = 0;
+            while (cur != null) {
+                if (i == idx) return cur.subject;
+                i++; cur = cur.next;
+            }
+            return null;
+        }
+
+        // Convert names to array (for sorting/searching)
+        String[] toNameArray() {
+            int n = 0; SubjectNode cur = head;
+            while (cur != null) { n++; cur = cur.next; }
+            String[] arr = new String[n];
+            cur = head; int i = 0;
+            while (cur != null) { arr[i++] = cur.subject.name; cur = cur.next; }
+            return arr;
+        }
+    }
+
+    // ==========================================================
+    //  STACK ADT implemented using Singly Linked List
+    //  Supports: push, pop, peek — O(1) for all
+    // ==========================================================
+    static class StackNode {
+        String data;
+        StackNode next;
+        StackNode(String d) { this.data = d; }
+    }
+
+    static class StudyStack {
+        StackNode top;
+
+        // PUSH: insert at top
+        void push(String data) {
+            StackNode node = new StackNode(data);
+            node.next = top;
+            top = node;
+        }
+
+        // POP: remove from top
+        String pop() {
+            if (isEmpty()) return null;
+            String data = top.data;
+            top = top.next;
+            return data;
+        }
+
+        // PEEK: view top without removing
+        String peek() {
+            return isEmpty() ? null : top.data;
+        }
+
+        boolean isEmpty() { return top == null; }
+    }
+
+    // ==========================================================
+    //  CHAR STACK (Array-based) for expression processing
+    // ==========================================================
+    static class CharStack {
+        char[] data;
+        int top = -1;
+        CharStack(int size) { data = new char[size]; }
+
+        void push(char c)    { data[++top] = c; }
+        char pop()           { return data[top--]; }
+        char peek()          { return data[top]; }
+        boolean isEmpty()    { return top == -1; }
+    }
+
+    // ==========================================================
+    //  QUEUE ADT implemented using Singly Linked List
+    //  FIFO: enqueue at rear, dequeue from front
+    // ==========================================================
+    static class QueueNode {
+        String data;
+        QueueNode next;
+        QueueNode(String d) { this.data = d; }
+    }
+
+    static class TaskQueue {
+        QueueNode front, rear;
+
+        // ENQUEUE: add at rear
+        void enqueue(String data) {
+            QueueNode node = new QueueNode(data);
+            if (rear == null) { front = rear = node; return; }
+            rear.next = node;
+            rear = node;
+        }
+
+        // DEQUEUE: remove from front
+        String dequeue() {
+            if (isEmpty()) return null;
+            String data = front.data;
+            front = front.next;
+            if (front == null) rear = null;
+            return data;
+        }
+
+        boolean isEmpty() { return front == null; }
+
+        void display() {
+            QueueNode cur = front; int i = 1;
+            while (cur != null) {
+                System.out.println("  " + i++ + ". " + cur.data);
+                cur = cur.next;
+            }
+        }
+    }
+
+    // ==========================================================
+    //  CIRCULAR LINKED LIST for Study Resources
+    //  Tail's next points back to head — enables rotation
+    // ==========================================================
+    static class CircularNode {
+        String data;
+        CircularNode next;
+        CircularNode(String d) { this.data = d; }
+    }
+
+    static class CircularResourceList {
+        CircularNode tail; // tail.next = head
+        int size = 0;
+        int pointer = 0; // current position tracker
+
+        void add(String data) {
+            CircularNode node = new CircularNode(data);
+            if (tail == null) { tail = node; tail.next = tail; }
+            else { node.next = tail.next; tail.next = node; tail = node; }
+            size++;
+        }
+
+        // Display next 'count' resources starting from current pointer
+        void displayNext(int count) {
+            if (tail == null) { System.out.println("No resources."); return; }
+            CircularNode cur = tail.next; // start at head
+            // advance to pointer position
+            for (int i = 0; i < pointer % size; i++) cur = cur.next;
+            for (int i = 0; i < Math.min(count, size); i++) {
+                System.out.println("  [" + (i + 1) + "] " + cur.data);
+                cur = cur.next;
+            }
+            pointer = (pointer + count) % size; // advance pointer for next call
+        }
+    }
+
+    // ==========================================================
+    //  PRIORITY ITEM (used in heap)
+    // ==========================================================
+    static class PriorityItem {
+        String name;
+        int priority; // lower = higher priority
+        PriorityItem(String name, int priority) {
+            this.name = name; this.priority = priority;
+        }
+    }
+
+    // ==========================================================
+    //  BINARY MIN-HEAP for Priority Topics
+    //  Parent ≤ both children; root is always the min priority
+    // ==========================================================
+    static class ExamHeap {
+        PriorityItem[] heap;
+        int size = 0;
+
+        ExamHeap(int capacity) { heap = new PriorityItem[capacity]; }
+
+        void insert(PriorityItem item) {
+            if (size >= heap.length) return;
+            heap[size] = item;
+            heapifyUp(size);
+            size++;
+        }
+
+        // Bubble up newly inserted element
+        void heapifyUp(int idx) {
+            while (idx > 0) {
+                int parent = (idx - 1) / 2;
+                if (heap[parent].priority > heap[idx].priority) {
+                    PriorityItem tmp = heap[parent]; heap[parent] = heap[idx]; heap[idx] = tmp;
+                    idx = parent;
+                } else break;
+            }
+        }
+
+        // Remove and return min
+        PriorityItem extractMin() {
+            if (size == 0) return null;
+            PriorityItem min = heap[0];
+            heap[0] = heap[--size];
+            heapifyDown(0);
+            return min;
+        }
+
+        // Sink down root after extraction
+        void heapifyDown(int idx) {
+            while (true) {
+                int left = 2 * idx + 1, right = 2 * idx + 2, smallest = idx;
+                if (left < size && heap[left].priority < heap[smallest].priority) smallest = left;
+                if (right < size && heap[right].priority < heap[smallest].priority) smallest = right;
+                if (smallest != idx) {
+                    PriorityItem tmp = heap[idx]; heap[idx] = heap[smallest]; heap[smallest] = tmp;
+                    idx = smallest;
+                } else break;
+            }
+        }
+
+        boolean isEmpty() { return size == 0; }
+
+        void display() {
+            // Display sorted by priority without destroying heap
+            PriorityItem[] copy = new PriorityItem[size];
+            for (int i = 0; i < size; i++) copy[i] = heap[i];
+            // Simple insertion sort on copy
+            for (int i = 1; i < size; i++) {
+                PriorityItem key = copy[i]; int j = i - 1;
+                while (j >= 0 && copy[j].priority > key.priority) { copy[j + 1] = copy[j]; j--; }
+                copy[j + 1] = key;
+            }
+            for (int i = 0; i < size; i++)
+                System.out.println("  [Priority " + copy[i].priority + "] " + copy[i].name);
+        }
+    }
+
+    // Reuse same heap structure for priority topics
+    static class PriorityTopicHeap extends ExamHeap {
+        PriorityTopicHeap(int cap) { super(cap); }
+    }
+
+    // ==========================================================
+    //  HASH TABLE (Separate Chaining) for Resources
+    //  Hash function maps keys to buckets; collisions resolved
+    //  by chaining nodes in a linked list at each bucket.
+    // ==========================================================
+    static class HashEntry {
+        String key, value;
+        HashEntry next;
+        HashEntry(String k, String v) { key = k; value = v; }
+    }
+
+    static class ResourceHashTable {
+        HashEntry[] table;
+        int capacity;
+        int count = 0;
+        static final float LOAD_FACTOR = 0.75f;
+
+        ResourceHashTable(int capacity) {
+            this.capacity = capacity;
+            table = new HashEntry[capacity];
+        }
+
+        // HASH FUNCTION: polynomial rolling hash
+        int hash(String key) {
+            int h = 0;
+            for (char c : key.toCharArray()) h = (h * 31 + c) % capacity;
+            return Math.abs(h);
+        }
+
+        // INSERT with separate chaining
+        void put(String key, String value) {
+            // REHASHING: if load factor exceeded, resize table
+            if ((float) count / capacity >= LOAD_FACTOR) rehash();
+
+            int idx = hash(key);
+            HashEntry cur = table[idx];
+            while (cur != null) {
+                if (cur.key.equals(key)) { cur.value = value; return; } // update
+                cur = cur.next;
+            }
+            // Prepend new entry (chaining)
+            HashEntry entry = new HashEntry(key, value);
+            entry.next = table[idx];
+            table[idx] = entry;
+            count++;
+        }
+
+        // LOOKUP
+        String get(String key) {
+            int idx = hash(key);
+            HashEntry cur = table[idx];
+            while (cur != null) {
+                if (cur.key.equals(key)) return cur.value;
+                cur = cur.next;
+            }
+            return null;
+        }
+
+        // REHASHING: double capacity and re-insert all entries
+        void rehash() {
+            HashEntry[] old = table;
+            int oldCap = capacity;
+            capacity *= 2;
+            table = new HashEntry[capacity];
+            count = 0;
+            for (int i = 0; i < oldCap; i++) {
+                HashEntry cur = old[i];
+                while (cur != null) { put(cur.key, cur.value); cur = cur.next; }
+            }
+        }
+    }
+
+    // ==========================================================
+    //  USER HASH TABLE (Open Addressing - Linear Probing)
+    //  Collisions resolved by probing the next empty slot.
+    // ==========================================================
+    static class UserHashTable {
+        User[] table;
+        int capacity;
+
+        UserHashTable(int capacity) {
+            this.capacity = capacity;
+            table = new User[capacity];
+        }
+
+        int hash(String key) {
+            int h = 0;
+            for (char c : key.toCharArray()) h = (h * 37 + c) % capacity;
+            return Math.abs(h);
+        }
+
+        // LINEAR PROBING: if slot occupied, try next slot
+        void insert(User user) {
+            int idx = hash(user.username);
+            while (table[idx] != null && !table[idx].username.equals(user.username))
+                idx = (idx + 1) % capacity;
+            table[idx] = user;
+        }
+
+        User find(String username) {
+            int idx = hash(username);
+            int start = idx;
+            while (table[idx] != null) {
+                if (table[idx].username.equals(username)) return table[idx];
+                idx = (idx + 1) % capacity;
+                if (idx == start) break;
+            }
+            return null;
+        }
+    }
+
+    // ==========================================================
+    //  USER CLASS
+    // ==========================================================
+    static class User {
+        String username, password, branch;
+        int semester, xp;
+        String badges;
+        SubjectSinglyList subjectList;
+        StudyStack studyHistory;
+        TaskQueue taskQueue;
+        PriorityTopicHeap priorityHeap;
+        CircularResourceList resources;
+
+        User(String u, String p, String b, int s) {
+            username = u; password = p; branch = b; semester = s;
+            xp = 0; badges = "None";
+            subjectList  = new SubjectSinglyList();
+            studyHistory = new StudyStack();
+            taskQueue    = new TaskQueue();
+            priorityHeap = new PriorityTopicHeap(20);
+            resources    = new CircularResourceList();
+            loadResources();
+        }
+
+        void loadResources() {
+            resources.add("GeeksForGeeks - DSA Tutorials");
+            resources.add("NPTEL - Engineering Courses");
+            resources.add("Khan Academy - Mathematics");
+            resources.add("YouTube - MIT OpenCourseWare");
+            resources.add("Coursera - Programming Foundations");
+            resources.add("LeetCode - Coding Practice");
+        }
+
+        void loadDefaultSubjects() {
+            // Load subjects based on branch and semester
+            String[][] cse = {
+                {"Mathematics-I","Calculus","Differential Equations","Matrices","Series"},
+                {"Physics","Waves","Optics","Quantum","Thermodynamics"},
+                {"Programming in C","Variables","Loops","Functions","Arrays","Pointers"},
+                {"Digital Electronics","Logic Gates","Flip Flops","Counters","Multiplexers"},
+                {"Engineering Drawing","Orthographic","Isometric","Sectional Views","Dimensioning"}
+            };
+            String[][] ece = {
+                {"Mathematics-I","Calculus","Laplace","Z-Transform","Fourier"},
+                {"Basic Electronics","Diodes","Transistors","Amplifiers","Filters"},
+                {"Circuit Theory","KVL","KCL","Mesh Analysis","Thevenin"},
+                {"Signals & Systems","Sampling","Convolution","DTFT","Fourier"},
+                {"Programming in C","Variables","Loops","Functions","Arrays"}
+            };
+            String[][] mech = {
+                {"Mathematics-I","Calculus","ODEs","Vector Algebra","Sequences"},
+                {"Engineering Mechanics","Statics","Dynamics","Friction","Kinematics"},
+                {"Thermodynamics","Laws","Cycles","Entropy","Heat Transfer"},
+                {"Manufacturing","Casting","Welding","Machining","Forming"},
+                {"Material Science","Crystal Structures","Alloys","Composites","Heat Treatment"}
+            };
+            String[][] choose = branch.equals("CSE") ? cse : branch.equals("ECE") ? ece : mech;
+
+            for (String[] sData : choose) {
+                Subject sub = new Subject(sData[0]);
+                for (int i = 1; i < sData.length; i++)
+                    sub.topics.addLast(new Topic(sData[i]));
+                subjectList.addLast(sub);
+            }
+
+            // Pre-load some upcoming tasks
+            taskQueue.enqueue("Complete Assignment - Unit 1");
+            taskQueue.enqueue("Prepare for Lab Exam");
+            taskQueue.enqueue("Revise previous semester topics");
+
+            // Pre-load priority topics
+            priorityHeap.insert(new PriorityItem("Exam Chapter 1 Revision", 1));
+            priorityHeap.insert(new PriorityItem("Assignment Submission",    2));
+            priorityHeap.insert(new PriorityItem("Lab Record Completion",    3));
+        }
+
+        void checkBadge() {
+            if (xp >= 100 && badges.equals("None"))   badges = "Beginner";
+            if (xp >= 250 && badges.equals("Beginner")) badges = "Learner";
+            if (xp >= 500 && badges.equals("Learner"))  badges = "Scholar";
+            if (xp >= 1000)                              badges = "Master";
+        }
+    }
+
+    // ==========================================================
+    //  POLYNOMIAL ADT (Linked List representation)
+    //  Demonstrates the Polynomial ADT concept using linked list.
+    //  Each node: coefficient, exponent, next pointer.
+    //  (Used internally as a structural concept demonstration)
+    // ==========================================================
+    static class PolyNode {
+        int coeff, exp;
+        PolyNode next;
+        PolyNode(int c, int e) { coeff = c; exp = e; }
+    }
+
+    static class PolynomialADT {
+        PolyNode head;
+
+        void insertTerm(int coeff, int exp) {
+            PolyNode node = new PolyNode(coeff, exp);
+            if (head == null || exp > head.exp) { node.next = head; head = node; return; }
+            PolyNode cur = head;
+            while (cur.next != null && cur.next.exp > exp) cur = cur.next;
+            node.next = cur.next;
+            cur.next = node;
+        }
+
+        String display() {
+            StringBuilder sb = new StringBuilder();
+            PolyNode cur = head;
+            while (cur != null) {
+                sb.append(cur.coeff).append("x^").append(cur.exp);
+                if (cur.next != null) sb.append(" + ");
+                cur = cur.next;
+            }
+            return sb.toString();
+        }
+
+        // Add two polynomials
+        static PolynomialADT add(PolynomialADT a, PolynomialADT b) {
+            PolynomialADT result = new PolynomialADT();
+            PolyNode pa = a.head, pb = b.head;
+            while (pa != null && pb != null) {
+                if (pa.exp == pb.exp) {
+                    result.insertTerm(pa.coeff + pb.coeff, pa.exp);
+                    pa = pa.next; pb = pb.next;
+                } else if (pa.exp > pb.exp) {
+                    result.insertTerm(pa.coeff, pa.exp); pa = pa.next;
+                } else {
+                    result.insertTerm(pb.coeff, pb.exp); pb = pb.next;
+                }
+            }
+            while (pa != null) { result.insertTerm(pa.coeff, pa.exp); pa = pa.next; }
+            while (pb != null) { result.insertTerm(pb.coeff, pb.exp); pb = pb.next; }
+            return result;
+        }
+    }
+
+    // ==========================================================
+    //  DEQUE (Double-Ended Queue) using Doubly Linked List
+    //  Supports insert/delete at both front and rear.
+    // ==========================================================
+    static class DequeNode {
+        String data;
+        DequeNode prev, next;
+        DequeNode(String d) { this.data = d; }
+    }
+
+    static class Deque {
+        DequeNode front, rear;
+
+        void addFront(String data) {
+            DequeNode node = new DequeNode(data);
+            if (front == null) { front = rear = node; return; }
+            node.next = front; front.prev = node; front = node;
+        }
+
+        void addRear(String data) {
+            DequeNode node = new DequeNode(data);
+            if (rear == null) { front = rear = node; return; }
+            rear.next = node; node.prev = rear; rear = node;
+        }
+
+        String removeFront() {
+            if (front == null) return null;
+            String d = front.data; front = front.next;
+            if (front != null) front.prev = null; else rear = null;
+            return d;
+        }
+
+        String removeRear() {
+            if (rear == null) return null;
+            String d = rear.data; rear = rear.prev;
+            if (rear != null) rear.next = null; else front = null;
+            return d;
+        }
+    }
+
+} // end class FreshersAcademicRoadmapm
