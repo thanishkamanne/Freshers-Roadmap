@@ -1,0 +1,1971 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FreshersRoadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#07080f;--bg2:#0c0d1a;--bg3:#131425;--card:#101120;--border:#1e1f3a;
+  --accent:#818cf8;--accent2:#f97316;--accent3:#a78bfa;--accent4:#ec4899;
+  --text:#e2e4f0;--text2:#5c6080;--glow:rgba(129,140,248,0.2);
+  --success:#34d399;--danger:#ef4444;--warning:#f97316;
+  --grad:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#ec4899 100%);
+  --grad2:linear-gradient(135deg,#f97316,#eab308);
+}
+[data-theme="light"]{
+  --bg:#f5f5ff;--bg2:#ededff;--bg3:#e0e0f8;--card:#ffffff;--border:#c4c6f0;
+  --accent:#6366f1;--accent2:#ea580c;--accent3:#7c3aed;--accent4:#db2777;
+  --text:#0f1020;--text2:#4a4a6a;--glow:rgba(99,102,241,0.14);
+  --success:#059669;--grad:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#ec4899 100%);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;transition:background .35s,color .35s;}
+h1,h2,h3,h4,h5{font-family:'Space Grotesk',sans-serif;}
+button{font-family:'Plus Jakarta Sans',sans-serif;}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+::-webkit-scrollbar-thumb:hover{background:var(--accent);}
+
+/* ─── AUTH PAGES ─── */
+.auth-page{display:none;min-height:100vh;align-items:center;justify-content:center;background:var(--bg);position:relative;overflow:hidden;}
+.auth-page.active{display:flex;}
+.auth-bg-blob{position:absolute;pointer-events:none;}
+.auth-bg-blob:nth-child(1){top:-20%;left:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(62,207,142,.1) 0%,transparent 70%);}
+.auth-bg-blob:nth-child(2){bottom:-20%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(56,189,248,.08) 0%,transparent 70%);}
+.auth-bg-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:44px 44px;opacity:.25;pointer-events:none;}
+
+.auth-card{background:var(--card);border:1px solid var(--border);border-radius:28px;padding:44px 40px;width:100%;max-width:480px;position:relative;z-index:2;box-shadow:0 32px 80px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.04);animation:cardUp .55s cubic-bezier(.16,1,.3,1) both;}
+@keyframes cardUp{from{opacity:0;transform:translateY(36px);}to{opacity:1;transform:translateY(0);}}
+
+/* LOGO */
+.brand-logo{display:flex;align-items:center;gap:11px;margin-bottom:28px;}
+.brand-logo .logo-mark{width:46px;height:46px;position:relative;flex-shrink:0;}
+.brand-logo .logo-mark svg{width:100%;height:100%;}
+.brand-name{display:flex;flex-direction:column;line-height:1.1;}
+.brand-name .name-main{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.brand-name .name-tag{font-size:10px;font-weight:600;color:var(--text2);letter-spacing:2px;text-transform:uppercase;}
+
+/* AUTH TABS */
+.auth-tabs{display:flex;background:var(--bg3);border-radius:14px;padding:4px;margin-bottom:28px;gap:4px;}
+.auth-tab{flex:1;padding:10px;border:none;background:none;border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .2s;}
+.auth-tab.active{background:var(--card);color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.25);}
+
+.auth-form{display:none;}
+.auth-form.active{display:block;}
+
+.auth-title{font-size:26px;font-weight:700;margin-bottom:6px;}
+.auth-sub{color:var(--text2);font-size:14px;margin-bottom:24px;line-height:1.5;}
+
+/* FORM ELEMENTS */
+.fg{margin-bottom:16px;}
+.fg label{display:block;font-size:11.5px;font-weight:700;color:var(--text2);margin-bottom:7px;letter-spacing:.8px;text-transform:uppercase;}
+.fg input,.fg select,.fg textarea{width:100%;background:var(--bg2);border:1.5px solid var(--border);border-radius:12px;padding:13px 16px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s;appearance:none;-webkit-appearance:none;}
+.fg input::placeholder{color:var(--text2);}
+.fg input:focus,.fg select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--glow);}
+.fg select option{background:var(--bg2);color:var(--text);}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.input-icon-wrap{position:relative;}
+.input-icon-wrap input{padding-left:42px;}
+.input-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none;display:flex;align-items:center;justify-content:center;width:18px;height:18px;}
+.input-icon svg{width:18px;height:18px;}
+.pw-toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text2);cursor:pointer;font-size:16px;padding:2px;}
+
+.btn-auth{width:100%;background:var(--grad);color:#fff;border:none;border-radius:12px;padding:15px;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:transform .2s,box-shadow .2s,opacity .2s;margin-top:6px;letter-spacing:.3px;}
+.btn-auth:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--glow);}
+.btn-auth:active{transform:translateY(0);}
+.btn-auth.loading{opacity:.7;pointer-events:none;}
+
+/* GOOGLE BUTTON */
+.btn-google{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:13px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--text);cursor:pointer;transition:all .2s;margin-bottom:4px;}
+.btn-google:hover{background:var(--bg3);border-color:var(--accent);box-shadow:0 4px 16px var(--glow);transform:translateY(-1px);}
+.btn-google:active{transform:translateY(0);}
+
+.divider{display:flex;align-items:center;gap:12px;margin:18px 0;color:var(--text2);font-size:12px;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+
+.terms-note{text-align:center;font-size:12px;color:var(--text2);margin-top:14px;line-height:1.5;}
+.terms-note a{color:var(--accent);text-decoration:none;}
+
+/* PASSWORD STRENGTH */
+.pw-strength{margin-top:6px;display:flex;gap:4px;align-items:center;}
+.pw-bar{height:3px;flex:1;border-radius:2px;background:var(--border);transition:background .3s;}
+.pw-bar.weak{background:#ef4444;}
+.pw-bar.medium{background:#f97316;}
+.pw-bar.strong{background:#3ecf8e;}
+.pw-label{font-size:11px;color:var(--text2);min-width:44px;}
+
+/* ─── NAVBAR ─── */
+.navbar{position:sticky;top:0;z-index:100;background:rgba(7,9,15,.9);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;height:64px;gap:8px;}
+[data-theme="light"] .navbar{background:rgba(248,250,252,.92);}
+.nav-brand{display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none;}
+.nav-brand .logo-mark{width:32px;height:32px;}
+.nav-brand .logo-mark svg{width:100%;height:100%;}
+.nav-brand-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-links{display:flex;align-items:center;gap:2px;margin-left:auto;list-style:none;}
+.nav-links a{color:var(--text2);text-decoration:none;padding:7px 12px;border-radius:8px;font-size:13px;font-weight:600;transition:all .2s;cursor:pointer;display:block;}
+.nav-links a:hover{color:var(--text);background:var(--bg3);}
+.nav-links a.active{color:var(--accent);background:rgba(62,207,142,.08);}
+.nav-actions{display:flex;align-items:center;gap:10px;margin-left:14px;}
+.icon-btn{width:38px;height:38px;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;transition:all .2s;flex-shrink:0;}
+.icon-btn:hover{border-color:var(--accent);}
+#mainApp{display:none;}
+#mainApp.active{display:block;}
+
+/* USER CHIP + DROPDOWN */
+.user-chip-wrap{position:relative;}
+.user-chip{display:flex;align-items:center;gap:8px;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;padding:5px 11px 5px 5px;font-size:13px;font-weight:600;cursor:pointer;transition:border-color .2s;}
+.user-chip:hover{border-color:var(--accent);}
+.u-avatar{width:28px;height:28px;background:var(--grad);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;}
+.u-chevron{font-size:10px;color:var(--text2);transition:transform .2s;}
+.u-chevron.open{transform:rotate(180deg);}
+.user-dropdown{position:absolute;top:calc(100% + 10px);right:0;background:var(--card);border:1.5px solid var(--border);border-radius:16px;min-width:230px;box-shadow:0 20px 60px rgba(0,0,0,.5);display:none;z-index:300;overflow:hidden;animation:ddAnim .2s ease both;}
+@keyframes ddAnim{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:translateY(0);}}
+.user-dropdown.open{display:block;}
+.dd-head{padding:16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.dd-avatar-lg{width:42px;height:42px;background:var(--grad);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:#fff;flex-shrink:0;}
+.dd-name{font-weight:700;font-size:14px;line-height:1.3;}
+.dd-info{font-size:11px;color:var(--text2);margin-top:1px;}
+.dd-body{padding:8px;}
+.dd-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;transition:background .15s;color:var(--text);}
+.dd-item:hover{background:var(--bg3);}
+.dd-item.red{color:var(--danger);}
+.dd-item.red:hover{background:rgba(239,68,68,.1);}
+.dd-sep{height:1px;background:var(--border);margin:4px 8px;}
+.dd-icon{font-size:15px;width:20px;text-align:center;}
+
+/* ─── CONTENT ─── */
+.section{display:none;padding:32px 24px;max-width:1200px;margin:0 auto;}
+.section.active{display:block;animation:secIn .35s ease both;}
+@keyframes secIn{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+/* HERO */
+.hero{background:var(--card);border:1.5px solid var(--border);border-radius:22px;padding:40px;margin-bottom:22px;position:relative;overflow:hidden;}
+.hero::after{content:'';position:absolute;top:-40%;right:-5%;width:420px;height:420px;background:radial-gradient(circle,var(--glow) 0%,transparent 68%);pointer-events:none;}
+.branch-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(62,207,142,.1);border:1px solid rgba(62,207,142,.25);color:var(--accent);padding:5px 13px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:14px;}
+.hero h1{font-size:32px;font-weight:700;line-height:1.2;margin-bottom:10px;}
+.hero h1 .hi-name{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero p{color:var(--text2);font-size:15px;max-width:480px;line-height:1.6;}
+.prog-row{margin-top:24px;display:flex;align-items:center;gap:14px;}
+.prog-track{flex:1;height:9px;background:var(--bg3);border-radius:999px;overflow:hidden;}
+.prog-fill{height:100%;background:var(--grad);border-radius:999px;transition:width 1.2s cubic-bezier(.16,1,.3,1);}
+.prog-pct{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px;color:var(--accent);min-width:46px;}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:22px;}
+.stat-card{background:var(--card);border:1.5px solid var(--border);border-radius:16px;padding:22px;transition:border-color .2s,transform .2s;cursor:default;}
+.stat-card:hover{border-color:var(--accent);transform:translateY(-3px);}
+.stat-icon{font-size:24px;margin-bottom:10px;}
+.stat-val{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:700;margin-bottom:3px;}
+.stat-lbl{color:var(--text2);font-size:12px;font-weight:500;}
+
+/* SECTION HEADER */
+.sec-hdr{margin-bottom:20px;}
+.sec-hdr h2{font-size:22px;font-weight:700;margin-bottom:4px;}
+.sec-hdr p{color:var(--text2);font-size:13px;}
+.sec-hdr-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;}
+
+/* SEM TABS */
+.sem-tabs{display:flex;gap:7px;}
+.sem-tab{padding:7px 16px;border-radius:8px;border:1.5px solid var(--border);background:var(--bg3);color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;}
+.sem-tab.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.sem-tab.locked{opacity:.35;cursor:not-allowed;}
+
+/* SUBJECTS */
+.subjects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px;}
+.subj-card{background:var(--card);border:1.5px solid var(--border);border-radius:18px;padding:24px;transition:all .25s;position:relative;overflow:hidden;}
+.subj-card:hover{border-color:var(--accent);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.35);}
+.subj-card.locked-card{opacity:.3;pointer-events:none;}
+.subj-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
+.subj-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.ring-wrap{width:44px;height:44px;position:relative;}
+.ring-wrap svg{transform:rotate(-90deg);}
+.ring-bg{fill:none;stroke:var(--bg3);stroke-width:4;}
+.ring-fg{fill:none;stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset 1s ease;}
+.ring-pct{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:10px;font-weight:700;}
+.subj-name{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;margin-bottom:4px;}
+.subj-code{color:var(--text2);font-size:11px;letter-spacing:1px;margin-bottom:11px;}
+.skill-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:13px;}
+.skill-tag{background:var(--bg3);color:var(--text2);padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500;}
+.checklist{list-style:none;}
+.checklist li{display:flex;align-items:center;gap:9px;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;cursor:pointer;transition:color .2s;user-select:none;}
+.checklist li:last-child{border-bottom:none;}
+.checklist li.done{color:var(--text2);text-decoration:line-through;}
+.chk{width:17px;height:17px;border-radius:5px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;font-size:10px;}
+.checklist li.done .chk{background:var(--success);border-color:var(--success);color:#fff;}
+.res-btn{margin-top:14px;width:100%;background:var(--bg3);border:1.5px solid var(--border);color:var(--text);border-radius:10px;padding:10px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.res-btn:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
+
+/* RESOURCES */
+.res-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.res-card{background:var(--card);border:1.5px solid var(--border);border-radius:16px;padding:22px;transition:all .25s;}
+.res-card:hover{border-color:var(--accent3);transform:translateY(-3px);}
+.res-type-badge{font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:9px;color:var(--accent3);}
+.res-card h3{font-size:15px;font-weight:700;margin-bottom:7px;}
+.res-card p{color:var(--text2);font-size:12.5px;line-height:1.6;}
+.res-subject{font-size:11px;color:var(--text2);margin-top:6px;}
+.res-link{display:inline-flex;align-items:center;gap:6px;margin-top:13px;color:var(--accent);font-size:12px;font-weight:700;text-decoration:none;transition:gap .2s;}
+.res-link:hover{gap:10px;}
+
+/* CAREER */
+.career-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;}
+.career-card{background:var(--card);border:1.5px solid var(--border);border-radius:16px;padding:26px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;}
+.career-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.career-card:nth-child(1)::before{background:linear-gradient(90deg,#3ecf8e,#22d3ee);}
+.career-card:nth-child(2)::before{background:linear-gradient(90deg,#f97316,#fbbf24);}
+.career-card:nth-child(3)::before{background:linear-gradient(90deg,#a78bfa,#ec4899);}
+.career-card:nth-child(4)::before{background:linear-gradient(90deg,#38bdf8,#6366f1);}
+.career-card:nth-child(5)::before{background:linear-gradient(90deg,#34d399,#059669);}
+.career-card:nth-child(6)::before{background:linear-gradient(90deg,#fb923c,#ef4444);}
+.career-card:hover{transform:translateY(-4px);box-shadow:0 14px 45px rgba(0,0,0,.35);border-color:var(--accent);}
+.career-icon{font-size:34px;margin-bottom:14px;}
+.career-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px;margin-bottom:7px;}
+.career-desc{color:var(--text2);font-size:12.5px;line-height:1.6;margin-bottom:13px;}
+.cskill-tags{display:flex;flex-wrap:wrap;gap:5px;}
+.cskill-tag{background:var(--bg3);color:var(--text2);padding:3px 9px;border-radius:20px;font-size:11px;}
+
+/* PROGRESS */
+.xp-card{background:var(--card);border:1.5px solid var(--border);border-radius:16px;padding:26px;margin-bottom:20px;}
+.xp-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.xp-title{font-size:18px;font-weight:700;}
+.xp-lvl{background:var(--grad2);color:#fff;padding:4px 13px;border-radius:20px;font-size:12px;font-weight:700;}
+.xp-track{height:11px;background:var(--bg3);border-radius:999px;overflow:hidden;margin-bottom:7px;}
+.xp-fill{height:100%;border-radius:999px;background:var(--grad2);transition:width 1s ease;}
+.xp-lbrow{display:flex;justify-content:space-between;font-size:11.5px;color:var(--text2);}
+.badges-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(135px,1fr));gap:11px;margin-bottom:22px;}
+.badge-card{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:18px;text-align:center;transition:all .25s;}
+.badge-card:hover{border-color:var(--warning);transform:scale(1.04);}
+.badge-card.locked{opacity:.25;filter:grayscale(1);}
+.badge-icon{font-size:32px;display:block;margin-bottom:8px;}
+.badge-name{font-size:12px;font-weight:700;margin-bottom:3px;}
+.badge-desc{font-size:10px;color:var(--text2);}
+.badge-earned{font-size:10px;color:var(--success);font-weight:700;margin-top:5px;}
+
+/* EXTRAS */
+.quote-card{background:var(--card);border:1.5px solid var(--border);border-radius:20px;padding:36px;text-align:center;margin-bottom:22px;position:relative;overflow:hidden;}
+.quote-card::before{content:'"';position:absolute;top:-15px;left:16px;font-size:130px;color:var(--accent);opacity:.07;font-family:'Space Grotesk',sans-serif;line-height:1;}
+.quote-text{font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:600;line-height:1.5;margin-bottom:12px;position:relative;z-index:1;}
+.quote-author{color:var(--text2);font-size:13px;}
+.quote-btn{margin-top:18px;padding:9px 20px;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;color:var(--text);cursor:pointer;font-size:13px;font-weight:600;transition:all .2s;}
+.quote-btn:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
+.countdown-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;margin-bottom:22px;}
+.cd-card{background:var(--card);border:1.5px solid var(--border);border-radius:16px;padding:22px;text-align:center;}
+.cd-exam{font-weight:700;font-size:13px;margin-bottom:8px;}
+.cd-num{font-family:'Space Grotesk',sans-serif;font-size:38px;font-weight:700;color:var(--accent);}
+.cd-unit{color:var(--text2);font-size:11px;}
+.cd-date{color:var(--text2);font-size:11px;margin-top:7px;}
+.cd-card{position:relative;}
+.cd-del{position:absolute;top:10px;right:10px;background:none;border:none;color:var(--text2);font-size:14px;cursor:pointer;opacity:0;transition:opacity .2s;padding:3px 6px;border-radius:6px;}
+.cd-card:hover .cd-del{opacity:1;}
+.cd-del:hover{background:rgba(239,68,68,.15);color:var(--danger);}
+.cd-urgency{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-top:5px;padding:2px 8px;border-radius:10px;display:inline-block;}
+.cd-urgency.red{background:rgba(239,68,68,.12);color:var(--danger);}
+.cd-urgency.orange{background:rgba(249,115,22,.12);color:var(--accent2);}
+.cd-urgency.green{background:rgba(62,207,142,.12);color:var(--success);}
+
+/* EXAM MANAGER MODAL */
+.exam-mgr{max-width:560px;}
+.exam-list{list-style:none;margin-bottom:20px;}
+.exam-li{display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--bg3);border:1.5px solid var(--border);border-radius:12px;margin-bottom:8px;transition:border-color .2s;}
+.exam-li:hover{border-color:var(--accent);}
+.exam-li-icon{font-size:20px;flex-shrink:0;}
+.exam-li-info{flex:1;}
+.exam-li-name{font-weight:700;font-size:13.5px;}
+.exam-li-date{font-size:11.5px;color:var(--text2);margin-top:1px;}
+.exam-li-days{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:var(--accent);flex-shrink:0;}
+.exam-li-del{background:none;border:none;color:var(--text2);font-size:16px;cursor:pointer;padding:4px 8px;border-radius:7px;transition:all .2s;flex-shrink:0;}
+.exam-li-del:hover{background:rgba(239,68,68,.15);color:var(--danger);}
+.add-exam-form{background:var(--bg2);border:1.5px solid var(--border);border-radius:14px;padding:18px;}
+.add-exam-title{font-size:13px;font-weight:700;margin-bottom:14px;color:var(--text2);text-transform:uppercase;letter-spacing:.8px;}
+.exam-form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.btn-add-exam{background:var(--grad);color:#fff;border:none;border-radius:10px;padding:11px 20px;font-size:13px;font-weight:700;cursor:pointer;width:100%;transition:opacity .2s;}
+.btn-add-exam:hover{opacity:.88;}
+.advice-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+.advice-card{background:var(--card);border:1.5px solid var(--border);border-radius:16px;padding:22px;transition:all .25s;}
+.advice-card:hover{border-color:var(--accent4);transform:translateY(-3px);}
+.adv-head{display:flex;align-items:center;gap:12px;margin-bottom:13px;}
+.adv-avatar{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;flex-shrink:0;}
+.adv-name{font-weight:700;font-size:14px;}
+.adv-role{font-size:11px;color:var(--text2);margin-top:1px;}
+.adv-college{font-size:11px;color:var(--text2);}
+.adv-badges{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:11px;}
+.adv-badge{padding:3px 9px;border-radius:20px;font-size:10.5px;font-weight:700;}
+.adv-text{color:var(--text2);font-size:13px;line-height:1.7;font-style:italic;}
+.adv-foot{display:flex;align-items:center;gap:8px;margin-top:11px;}
+.like-btn{background:none;border:1.5px solid var(--border);color:var(--text2);padding:4px 10px;border-radius:20px;font-size:12px;cursor:pointer;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif;}
+.like-btn:hover{border-color:var(--danger);color:var(--danger);}
+.like-count{font-size:12px;color:var(--text2);}
+.verified{color:#38bdf8;font-size:13px;margin-left:3px;}
+
+/* ─── MODALS ─── */
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(8px);}
+.modal-backdrop.open{display:flex;}
+.modal-box{background:var(--card);border:1.5px solid var(--border);border-radius:22px;padding:30px;max-width:500px;width:calc(100% - 28px);max-height:85vh;overflow-y:auto;animation:cardUp .3s ease both;}
+.modal-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.modal-top h3{font-size:19px;font-weight:700;}
+.modal-close{background:none;border:none;color:var(--text2);font-size:22px;cursor:pointer;padding:2px;line-height:1;}
+.res-list{list-style:none;}
+.res-list li{padding:13px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:11px;}
+.res-list li:last-child{border-bottom:none;}
+.rli-icon{font-size:18px;flex-shrink:0;}
+.rli-info{flex:1;}
+.rli-name{font-weight:600;font-size:13px;margin-bottom:2px;}
+.rli-url{color:var(--accent);font-size:11.5px;cursor:pointer;}
+.rli-url:hover{text-decoration:underline;}
+.rli-tag{background:var(--bg3);color:var(--text2);padding:3px 9px;border-radius:20px;font-size:10.5px;flex-shrink:0;}
+
+/* SETTINGS PANEL */
+.panel-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:400;backdrop-filter:blur(6px);}
+.panel-overlay.open{display:block;}
+.settings-panel{position:fixed;top:0;right:-400px;width:380px;height:100vh;background:var(--card);border-left:1.5px solid var(--border);z-index:401;overflow-y:auto;transition:right .35s cubic-bezier(.16,1,.3,1);}
+.settings-panel.open{right:0;}
+.sp-head{padding:22px 22px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--card);z-index:1;}
+.sp-head h3{font-size:18px;font-weight:700;}
+.sp-body{padding:18px;}
+.sp-group{margin-bottom:24px;}
+.sp-group-title{font-size:10.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text2);margin-bottom:10px;}
+.sp-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);}
+.sp-row:last-child{border-bottom:none;}
+.sp-row-l{display:flex;align-items:center;gap:10px;}
+.sp-icon{font-size:17px;}
+.sp-label{font-size:13.5px;font-weight:600;}
+.sp-sub{font-size:11px;color:var(--text2);margin-top:1px;}
+.sp-row-r{display:flex;align-items:center;}
+.toggle{position:relative;width:42px;height:23px;}
+.toggle input{opacity:0;width:0;height:0;}
+.tog-sl{position:absolute;cursor:pointer;inset:0;background:var(--bg3);border-radius:23px;transition:.3s;border:1.5px solid var(--border);}
+.tog-sl::before{content:'';position:absolute;width:17px;height:17px;left:2px;top:1px;background:var(--text2);border-radius:50%;transition:.3s;}
+input:checked+.tog-sl{background:var(--accent);border-color:var(--accent);}
+input:checked+.tog-sl::before{transform:translateX(19px);background:#fff;}
+.sp-select{background:var(--bg3);border:1.5px solid var(--border);color:var(--text);border-radius:8px;padding:5px 10px;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;outline:none;cursor:pointer;}
+.sp-danger-btn{width:100%;padding:12px;border-radius:12px;background:rgba(239,68,68,.1);border:1.5px solid rgba(239,68,68,.25);color:var(--danger);font-size:13.5px;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.sp-danger-btn:hover{background:rgba(239,68,68,.2);}
+
+/* CONFIRM DIALOG */
+.confirm-back{display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:700;align-items:center;justify-content:center;backdrop-filter:blur(10px);}
+.confirm-back.open{display:flex;}
+.confirm-box{background:var(--card);border:1.5px solid var(--border);border-radius:22px;padding:32px;text-align:center;max-width:360px;width:calc(100% - 28px);animation:cardUp .3s ease;}
+.confirm-icon{font-size:42px;margin-bottom:12px;}
+.confirm-box h3{font-size:20px;font-weight:700;margin-bottom:8px;}
+.confirm-box p{color:var(--text2);font-size:13.5px;margin-bottom:22px;line-height:1.5;}
+.confirm-btns{display:flex;gap:11px;justify-content:center;}
+.btn-cancel-sm{padding:11px 22px;background:var(--bg3);border:1.5px solid var(--border);border-radius:11px;color:var(--text);font-size:13.5px;font-weight:600;cursor:pointer;transition:all .2s;}
+.btn-cancel-sm:hover{background:var(--bg2);}
+.btn-danger-sm{padding:11px 22px;background:var(--danger);border:none;border-radius:11px;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;transition:opacity .2s;}
+.btn-danger-sm:hover{opacity:.85;}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;right:22px;background:var(--card);border:1.5px solid var(--border);border-radius:13px;padding:13px 18px;font-size:13.5px;z-index:9999;box-shadow:0 10px 40px rgba(0,0,0,.5);animation:toastIn .3s ease;max-width:290px;font-weight:500;}
+@keyframes toastIn{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:translateX(0);}}
+.toast.success{border-color:var(--success);}
+.toast.xp{border-color:var(--warning);}
+.toast.err{border-color:var(--danger);}
+
+/* PRINT BTN */
+.print-btn{padding:10px 20px;background:var(--bg3);border:1.5px solid var(--border);border-radius:10px;color:var(--text);cursor:pointer;font-size:13.5px;font-weight:600;transition:all .2s;display:inline-flex;align-items:center;gap:8px;}
+.print-btn:hover{background:var(--accent2);border-color:var(--accent2);color:#fff;}
+
+/* GOOGLE ACCOUNT PICKER */
+.g-picker-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:800;align-items:center;justify-content:center;backdrop-filter:blur(6px);}
+.g-picker-backdrop.open{display:flex;animation:fadeInPicker .2s ease;}
+@keyframes fadeInPicker{from{opacity:0;}to{opacity:1;}}
+.g-picker-box{background:#fff;border-radius:20px;width:380px;max-width:calc(100vw - 32px);box-shadow:0 24px 80px rgba(0,0,0,.5);overflow:hidden;animation:cardUp .3s cubic-bezier(.16,1,.3,1) both;font-family:'Plus Jakarta Sans',sans-serif;}
+.g-picker-head{padding:20px 24px 16px;border-bottom:1px solid #e8eaed;}
+.g-picker-logo{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.g-picker-logo svg{width:70px;}
+.g-picker-head h3{font-size:16px;font-weight:600;color:#202124;margin-bottom:4px;}
+.g-picker-head p{font-size:13px;color:#5f6368;}
+.g-accounts{padding:8px 0;}
+.g-account{display:flex;align-items:center;gap:14px;padding:12px 24px;cursor:pointer;transition:background .15s;border:none;background:none;width:100%;text-align:left;}
+.g-account:hover{background:#f1f3f4;}
+.g-account:active{background:#e8eaf6;}
+.g-av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;color:#fff;flex-shrink:0;font-family:'Space Grotesk',sans-serif;}
+.g-account-info{flex:1;}
+.g-account-name{font-size:14px;font-weight:600;color:#202124;margin-bottom:1px;}
+.g-account-email{font-size:12px;color:#5f6368;}
+.g-account-check{font-size:14px;color:#1a73e8;opacity:0;transition:opacity .2s;}
+.g-account:hover .g-account-check{opacity:1;}
+.g-picker-sep{height:1px;background:#e8eaed;margin:4px 0;}
+.g-picker-foot{padding:14px 24px;display:flex;justify-content:flex-end;gap:10px;border-top:1px solid #e8eaed;}
+.g-btn-cancel{padding:9px 20px;border:1px solid #dadce0;background:#fff;border-radius:8px;font-size:13px;font-weight:600;color:#3c4043;cursor:pointer;transition:background .15s;}
+.g-btn-cancel:hover{background:#f1f3f4;}
+.g-picker-use-another{display:flex;align-items:center;gap:12px;padding:12px 24px;cursor:pointer;color:#1a73e8;font-size:13px;font-weight:600;border:none;background:none;width:100%;transition:background .15s;}
+.g-picker-use-another:hover{background:#f1f3f4;}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+  .auth-card{padding:28px 20px;}
+  .fg-row{grid-template-columns:1fr;}
+  .hero{padding:22px;}
+  .hero h1{font-size:24px;}
+  .section{padding:18px 14px;}
+  .nav-links{display:none;}
+  .settings-panel{width:100%;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ AUTH PAGE ═══════════════ -->
+<div id="signupPage" class="auth-page active">
+  <div class="auth-bg-blob"></div>
+  <div class="auth-bg-blob"></div>
+  <div class="auth-bg-grid"></div>
+  <div class="auth-card">
+
+    <!-- NEW LOGO -->
+    <div class="brand-logo">
+      <div class="logo-mark">
+        <svg viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="lg1" x1="0" y1="0" x2="46" y2="46">
+              <stop offset="0%" stop-color="#6366f1"/>
+              <stop offset="55%" stop-color="#8b5cf6"/>
+              <stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient>
+          </defs>
+          <rect width="46" height="46" rx="13" fill="url(#lg1)"/>
+          <!-- Open book base -->
+          <path d="M9 30 L9 17 C9 17 16 15 23 17 C30 15 37 17 37 17 L37 30 C37 30 30 28 23 30 C16 28 9 30 9 30 Z" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.6)" stroke-width="1.2"/>
+          <!-- Book spine -->
+          <line x1="23" y1="17" x2="23" y2="30" stroke="rgba(255,255,255,0.7)" stroke-width="1.2"/>
+          <!-- Rocket body -->
+          <path d="M23 8 C23 8 27 12 27 17 L23 19 L19 17 C19 12 23 8 23 8 Z" fill="white"/>
+          <!-- Rocket window -->
+          <circle cx="23" cy="14" r="1.8" fill="url(#lg1)" stroke="white" stroke-width=".6"/>
+          <!-- Rocket fins -->
+          <path d="M19 17 L17 20 L19 19 Z" fill="rgba(255,255,255,0.7)"/>
+          <path d="M27 17 L29 20 L27 19 Z" fill="rgba(255,255,255,0.7)"/>
+          <!-- Flame -->
+          <path d="M21.5 19 C21.5 19 22 22 23 23 C24 22 24.5 19 24.5 19 Z" fill="#fbbf24" opacity=".9"/>
+          <!-- Stars on book pages -->
+          <circle cx="15" cy="22" r="1" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="31" cy="22" r="1" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="13" cy="26" r=".7" fill="rgba(255,255,255,0.35)"/>
+          <circle cx="33" cy="26" r=".7" fill="rgba(255,255,255,0.35)"/>
+        </svg>
+      </div>
+      <div class="brand-name">
+        <span class="name-main">FreshersRoadmap</span>
+        <span class="name-tag">Your First-Year Navigator</span>
+      </div>
+    </div>
+
+    <!-- TABS — Login first, Signup second -->
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabLogin" onclick="switchAuth('login')">Sign In</button>
+      <button class="auth-tab" id="tabSignup" onclick="switchAuth('signup')">Create Account</button>
+    </div>
+
+    <!-- ── LOGIN FORM ── -->
+    <div class="auth-form active" id="loginForm">
+      <h2 class="auth-title">Welcome back 👋</h2>
+      <p class="auth-sub">Sign in to continue your academic journey right where you left off.</p>
+
+      <!-- Google Button -->
+      <button class="btn-google" onclick="handleGoogleLogin()">
+        <svg width="20" height="20" viewBox="0 0 48 48" style="flex-shrink:0">
+          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+        </svg>
+        Continue with Google
+      </button>
+
+      <div class="divider">or sign in with email</div>
+
+      <div class="fg">
+        <label>Email Address</label>
+        <div class="input-icon-wrap">
+          <span class="input-icon">📧</span>
+          <input type="email" id="li-email" placeholder="Enter your email address" />
+        </div>
+      </div>
+      <button class="btn-auth" onclick="handleLogin()">🚀 Sign In</button>
+      <p class="terms-note" style="margin-top:14px;">New here? <a href="#" onclick="switchAuth('signup')">Create a free account →</a></p>
+    </div>
+
+    <!-- ── SIGNUP FORM ── -->
+    <div class="auth-form" id="signupForm">
+      <h2 class="auth-title">Start your journey 🚀</h2>
+      <p class="auth-sub">Create your free account and get a personalized roadmap for your first year.</p>
+
+      <div class="fg-row">
+        <div class="fg">
+          <label>Full Name</label>
+          <input type="text" id="su-name" placeholder="Enter your full name" />
+        </div>
+        <div class="fg">
+          <label>Email Address</label>
+          <div class="input-icon-wrap">
+            <span class="input-icon">📧</span>
+            <input type="email" id="su-email" placeholder="Enter your email address" />
+          </div>
+        </div>
+      </div>
+      <div class="fg-row">
+        <div class="fg">
+          <label>College Roll Number</label>
+          <input type="text" id="su-roll" placeholder="e.g. 23CS001" />
+        </div>
+        <div class="fg">
+          <label>College Name</label>
+          <input type="text" id="su-college" placeholder="Your college name" />
+        </div>
+      </div>
+      <div class="fg-row">
+        <div class="fg">
+          <label>Branch / Stream</label>
+          <select id="su-branch">
+            <option value="">— Select Branch —</option>
+            <option value="CSE">CSE — Computer Science</option>
+            <option value="ECE">ECE — Electronics & Communication</option>
+            <option value="EEE">EEE — Electrical & Electronics</option>
+            <option value="MECH">MECH — Mechanical Engineering</option>
+            <option value="CIVIL">CIVIL — Civil Engineering</option>
+            <option value="IT">IT — Information Technology</option>
+            <option value="AIDS">AI&DS — AI & Data Science</option>
+            <option value="CHEM">CHEM — Chemical Engineering</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Current Semester</label>
+          <select id="su-sem">
+            <option value="">— Select Semester —</option>
+            <option value="1">Semester 1</option>
+            <option value="2">Semester 2</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-auth" onclick="handleSignup()">🎓 Create My Account</button>
+      <p class="terms-note">Already have an account? <a href="#" onclick="switchAuth('login')">Sign in →</a></p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ GOOGLE ACCOUNT PICKER ═══ -->
+<div class="g-picker-backdrop" id="gPickerBackdrop" onclick="closeGPicker(event)">
+  <div class="g-picker-box">
+    <div class="g-picker-head">
+      <div class="g-picker-logo">
+        <!-- Google wordmark SVG -->
+        <svg viewBox="0 0 75 24" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#4285F4" d="M9.24 8.19v2.46h5.88c-.18 1.38-.64 2.34-1.44 3.06-.88.77-2.28 1.61-4.44 1.61-3.55 0-6.33-2.86-6.33-6.41s2.78-6.41 6.33-6.41c1.95 0 3.22.39 4.21 1.32l1.72-1.72C13.85.5 12.15 0 9.24 0 4.28 0 .11 4 .11 9s4.17 9 9.13 9c2.68 0 4.7-.88 6.28-2.53 1.63-1.63 2.13-3.91 2.13-5.75 0-.57-.04-1.1-.13-1.53H9.24z"/>
+          <path fill="#EA4335" d="M25 6.19c-3.21 0-5.83 2.44-5.83 5.81 0 3.34 2.62 5.81 5.83 5.81s5.83-2.46 5.83-5.81c0-3.37-2.62-5.81-5.83-5.81zm0 9.33c-1.76 0-3.28-1.45-3.28-3.52 0-2.09 1.52-3.52 3.28-3.52s3.28 1.43 3.28 3.52c0 2.07-1.52 3.52-3.28 3.52z"/>
+          <path fill="#FBBC05" d="M53.58 7.49h-.09c-.57-.68-1.67-1.3-3.06-1.3C47.53 6.19 45 8.72 45 12c0 3.26 2.53 5.81 5.43 5.81 1.39 0 2.49-.61 3.06-1.32h.09v.81c0 2.22-1.19 3.41-3.1 3.41-1.56 0-2.53-1.12-2.93-2.07l-2.22.92c.64 1.54 2.33 3.43 5.15 3.43 2.99 0 5.52-1.76 5.52-6.05V6.49h-2.42v1zm-2.93 8.03c-1.76 0-3.1-1.5-3.1-3.52 0-2.05 1.34-3.52 3.1-3.52 1.74 0 3.1 1.5 3.1 3.54.01 2.03-1.36 3.5-3.1 3.5z"/>
+          <path fill="#4285F4" d="M38 6.19c-3.21 0-5.83 2.44-5.83 5.81 0 3.34 2.62 5.81 5.83 5.81s5.83-2.46 5.83-5.81c0-3.37-2.62-5.81-5.83-5.81zm0 9.33c-1.76 0-3.28-1.45-3.28-3.52 0-2.09 1.52-3.52 3.28-3.52s3.28 1.43 3.28 3.52c0 2.07-1.52 3.52-3.28 3.52z"/>
+          <path fill="#34A853" d="M58 .24h2.51v17.57H58z"/>
+          <path fill="#EA4335" d="M64.37 14.07c-.64-1.95-2.59-3.88-5.33-3.88-3.21 0-5.88 2.56-5.88 5.81 0 3.26 2.62 5.81 6.19 5.81 2.86 0 4.51-1.75 5.19-2.77l-2.12-1.41c-.71 1.04-1.67 1.72-3.07 1.72-1.39 0-2.38-.64-3.01-1.89l8.3-3.43-.27-.96zm-8.46 2.07c-.07-2.24 1.74-3.38 3.04-3.38.99 0 1.85.5 2.13 1.21l-5.17 2.17z"/>
+        </svg>
+      </div>
+      <h3>Choose an account</h3>
+      <p>to continue to FreshersRoadmap</p>
+    </div>
+    <div class="g-accounts" id="gAccountsList"></div>
+    <div class="g-picker-sep"></div>
+    <button class="g-picker-use-another" onclick="useAnotherAccount()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#1a73e8" stroke-width="1.5"/><path d="M12 8v8M8 12h8" stroke="#1a73e8" stroke-width="1.8" stroke-linecap="round"/></svg>
+      Use another account
+    </button>
+    <div class="g-picker-foot">
+      <button class="g-btn-cancel" onclick="closeGPicker()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ MAIN APP ═══════════════ -->
+<div id="mainApp">
+  <nav class="navbar">
+    <div class="nav-brand" onclick="showSection('home')">
+      <div class="logo-mark">
+        <svg viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="nlg" x1="0" y1="0" x2="46" y2="46">
+              <stop offset="0%" stop-color="#6366f1"/>
+              <stop offset="55%" stop-color="#8b5cf6"/>
+              <stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient>
+          </defs>
+          <rect width="46" height="46" rx="13" fill="url(#nlg)"/>
+          <path d="M9 30 L9 17 C9 17 16 15 23 17 C30 15 37 17 37 17 L37 30 C37 30 30 28 23 30 C16 28 9 30 9 30 Z" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.6)" stroke-width="1.2"/>
+          <line x1="23" y1="17" x2="23" y2="30" stroke="rgba(255,255,255,0.7)" stroke-width="1.2"/>
+          <path d="M23 8 C23 8 27 12 27 17 L23 19 L19 17 C19 12 23 8 23 8 Z" fill="white"/>
+          <circle cx="23" cy="14" r="1.8" fill="url(#nlg)" stroke="white" stroke-width=".6"/>
+          <path d="M19 17 L17 20 L19 19 Z" fill="rgba(255,255,255,0.7)"/>
+          <path d="M27 17 L29 20 L27 19 Z" fill="rgba(255,255,255,0.7)"/>
+          <path d="M21.5 19 C21.5 19 22 22 23 23 C24 22 24.5 19 24.5 19 Z" fill="#fbbf24" opacity=".9"/>
+          <circle cx="15" cy="22" r="1" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="31" cy="22" r="1" fill="rgba(255,255,255,0.5)"/>
+        </svg>
+      </div>
+      <span class="nav-brand-name">FreshersRoadmap</span>
+    </div>
+    <ul class="nav-links">
+      <li><a onclick="showSection('home')" id="nav-home" class="active">Home</a></li>
+      <li><a onclick="showSection('roadmap')" id="nav-roadmap">Roadmap</a></li>
+      <li><a onclick="showSection('resources')" id="nav-resources">Resources</a></li>
+      <li><a onclick="showSection('career')" id="nav-career">Careers</a></li>
+      <li><a onclick="showSection('progress')" id="nav-progress">Progress</a></li>
+      <li><a onclick="showSection('extras')" id="nav-extras">Extras</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="icon-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</button>
+      <div class="user-chip-wrap">
+        <div class="user-chip" onclick="toggleDd(event)">
+          <div class="u-avatar" id="navAv">?</div>
+          <span id="navName">User</span>
+          <span class="u-chevron" id="chevron">▾</span>
+        </div>
+        <div class="user-dropdown" id="userDd">
+          <div class="dd-head">
+            <div class="dd-avatar-lg" id="ddAv">?</div>
+            <div>
+              <div class="dd-name" id="ddName">Student</div>
+              <div class="dd-info" id="ddInfo">CSE • Sem 1</div>
+            </div>
+          </div>
+          <div class="dd-body">
+            <div class="dd-item" onclick="openEditProfile()"><span class="dd-icon">✏️</span>Edit Profile</div>
+            <div class="dd-item" onclick="openSettings()"><span class="dd-icon">⚙️</span>Settings</div>
+            <div class="dd-item" onclick="showSection('progress')"><span class="dd-icon">📊</span>My Progress</div>
+            <div class="dd-sep"></div>
+            <div class="dd-item" onclick="confirmLogout()"><span class="dd-icon">🚪</span>Log Out</div>
+            <div class="dd-item red" onclick="confirmDelete()"><span class="dd-icon">🗑️</span>Delete Account</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HOME -->
+  <div id="home" class="section active">
+    <div class="hero">
+      <div class="branch-pill" id="heroBranch">⚡ CSE BRANCH</div>
+      <h1 id="heroGreet">Good to see you, <span class="hi-name" id="heroName">there</span>!</h1>
+      <p>Your personalized academic roadmap is live. Track topics, explore resources, unlock badges, and build your future — one checkpoint at a time.</p>
+      <div class="prog-row">
+        <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+        <div class="prog-pct" id="progPct">0%</div>
+        <span style="color:var(--text2);font-size:12px;">overall</span>
+      </div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-icon">📚</div><div class="stat-val" id="sSubs">0</div><div class="stat-lbl">Subjects</div></div>
+      <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-val" id="sDone">0</div><div class="stat-lbl">Topics Done</div></div>
+      <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-val" id="sXP">0</div><div class="stat-lbl">XP Earned</div></div>
+      <div class="stat-card"><div class="stat-icon">🏆</div><div class="stat-val" id="sBadges">0</div><div class="stat-lbl">Badges</div></div>
+    </div>
+    <div class="quote-card">
+      <div class="quote-text" id="hQuote">"The secret of getting ahead is getting started."</div>
+      <div class="quote-author" id="hQuoteBy">— Mark Twain</div>
+      <button class="quote-btn" onclick="newQuote()">✨ New Quote</button>
+    </div>
+  </div>
+
+  <!-- ROADMAP -->
+  <div id="roadmap" class="section">
+    <div class="sec-hdr-row">
+      <div><h2 style="font-size:22px;font-weight:700;">📍 Academic Roadmap</h2><p style="color:var(--text2);font-size:13px;margin-top:3px;">Check off topics as you complete them. Sem 2 unlocks after 80% of Sem 1.</p></div>
+      <div class="sem-tabs" id="semTabs"></div>
+    </div>
+    <div class="subjects-grid" id="subjectsGrid"></div>
+  </div>
+
+  <!-- RESOURCES -->
+  <div id="resources" class="section">
+    <div class="sec-hdr"><h2>📖 Study Resources</h2><p>Real, working links — videos, notes, practice, tools. All verified.</p></div>
+    <div class="res-grid" id="resGrid"></div>
+  </div>
+
+  <!-- CAREER -->
+  <div id="career" class="section">
+    <div class="sec-hdr"><h2>🚀 Career Path Explorer</h2><p>Where your branch can take you — roles, skills, and roadmaps.</p></div>
+    <div class="career-grid" id="careerGrid"></div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div id="progress" class="section">
+    <div class="sec-hdr"><h2>📊 Your Progress</h2><p>XP, levels, badges, and subject-wise tracking.</p></div>
+    <div class="xp-card">
+      <div class="xp-top"><div class="xp-title">🌟 Experience Points</div><div class="xp-lvl" id="xpLvl">Level 1 — Fresher</div></div>
+      <div class="xp-track"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+      <div class="xp-lbrow"><span id="xpCur">0 XP</span><span id="xpNxt">500 XP to next level</span></div>
+    </div>
+    <div class="sec-hdr" style="margin-top:6px;"><h3 style="font-size:17px;font-weight:700;">🏅 Achievement Badges</h3></div>
+    <div class="badges-grid" id="badgesGrid"></div>
+    <div class="sec-hdr" style="margin-top:4px;"><h3 style="font-size:17px;font-weight:700;">📋 Subject Progress</h3></div>
+    <div id="subProgList"></div>
+  </div>
+
+  <!-- EXTRAS -->
+  <div id="extras" class="section">
+    <div class="sec-hdr"><h2>✨ Tools & Extras</h2><p>Motivation, exam countdowns, senior advice, and your planner.</p></div>
+    <div class="sec-hdr"><h3 style="font-size:16px;font-weight:700;margin-bottom:12px;">💡 Daily Motivation</h3></div>
+    <div class="quote-card">
+      <div class="quote-text" id="eQuote">"The secret of getting ahead is getting started."</div>
+      <div class="quote-author" id="eQuoteBy">— Mark Twain</div>
+      <button class="quote-btn" onclick="newQuote()">✨ New Quote</button>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+      <h3 style="font-size:16px;font-weight:700;">⏳ Exam Countdown</h3>
+      <button onclick="openExamMgr()" style="background:rgba(62,207,142,.1);border:1.5px solid rgba(62,207,142,.25);color:var(--accent);border-radius:9px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(62,207,142,.2)'" onmouseout="this.style.background='rgba(62,207,142,.1)'">➕ Add / Manage Exams</button>
+    </div>
+    <div class="countdown-grid" id="cdGrid"></div>
+    <div class="sec-hdr" style="margin-top:8px;"><h3 style="font-size:16px;font-weight:700;margin-bottom:12px;">🎓 Advice from Seniors</h3></div>
+    <div class="advice-grid" id="advGrid"></div>
+    <div class="sec-hdr" style="margin-top:24px;"><h3 style="font-size:16px;font-weight:700;margin-bottom:12px;">🖨️ Printable Planner</h3></div>
+    <div class="quote-card" style="padding:26px;">
+      <p style="margin-bottom:14px;color:var(--text2);">Print your personalized weekly academic planner with all your subjects.</p>
+      <button class="print-btn" onclick="window.print()">🖨️ Print My Planner</button>
+    </div>
+  </div>
+</div><!-- /mainApp -->
+
+<!-- ═══ EXAM MANAGER MODAL ═══ -->
+<div class="modal-backdrop" id="examMgrModal" onclick="handleExamMgrClick(event)">
+  <div class="modal-box exam-mgr">
+    <div class="modal-top">
+      <h3>📅 Exam Countdown Manager</h3>
+      <button class="modal-close" onclick="closeExamMgr()">×</button>
+    </div>
+    <ul class="exam-list" id="examMgrList"></ul>
+    <div class="add-exam-form">
+      <div class="add-exam-title">➕ Add New Exam</div>
+      <div class="fg">
+        <label>Exam / Event Name</label>
+        <input type="text" id="newExamName" placeholder="e.g. Mid Semester Exam, Lab Internal, Assignment" maxlength="60"/>
+      </div>
+      <div class="exam-form-row">
+        <div class="fg">
+          <label>Exam Date</label>
+          <input type="date" id="newExamDate" />
+        </div>
+        <div class="fg">
+          <label>Category</label>
+          <select id="newExamType">
+            <option value="📝">📝 Exam</option>
+            <option value="🧪">🧪 Lab / Practical</option>
+            <option value="📋">📋 Assignment</option>
+            <option value="🎤">🎤 Viva / Oral</option>
+            <option value="📊">📊 Project</option>
+            <option value="🗓️">🗓️ Other</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-add-exam" onclick="addExam()">Add to Countdown</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ RESOURCE MODAL ═══ -->
+<div class="modal-backdrop" id="resModal" onclick="handleResModalClick(event)">
+  <div class="modal-box">
+    <div class="modal-top"><h3 id="resModalTitle">Resources</h3><button class="modal-close" onclick="closeResModal()">×</button></div>
+    <ul class="res-list" id="resModalList"></ul>
+  </div>
+</div>
+
+<!-- ═══ EDIT PROFILE MODAL ═══ -->
+<div class="modal-backdrop" id="editModal" onclick="handleEditModalClick(event)">
+  <div class="modal-box">
+    <div class="modal-top"><h3>✏️ Edit Profile</h3><button class="modal-close" onclick="closeEditModal()">×</button></div>
+    <div class="fg"><label>Full Name</label><input type="text" id="ep-name" placeholder="Your full name"/></div>
+    <div class="fg-row">
+      <div class="fg"><label>Email</label><input type="email" id="ep-email" placeholder="Email"/></div>
+      <div class="fg"><label>Roll Number</label><input type="text" id="ep-roll" placeholder="Roll number"/></div>
+    </div>
+    <div class="fg"><label>College Name</label><input type="text" id="ep-college" placeholder="Your college name"/></div>
+    <div class="fg-row">
+      <div class="fg"><label>Branch</label><select id="ep-branch">
+        <option value="CSE">CSE</option><option value="ECE">ECE</option><option value="EEE">EEE</option>
+        <option value="MECH">MECH</option><option value="CIVIL">CIVIL</option><option value="IT">IT</option>
+        <option value="AIDS">AI&DS</option><option value="CHEM">CHEM</option>
+      </select></div>
+      <div class="fg"><label>Semester</label><select id="ep-sem">
+        <option value="1">Semester 1</option><option value="2">Semester 2</option>
+      </select></div>
+    </div>
+    <button class="btn-auth" onclick="saveProfile()">💾 Save Changes</button>
+  </div>
+</div>
+
+<!-- ═══ SETTINGS PANEL ═══ -->
+<div class="panel-overlay" id="panelOverlay" onclick="closeSettings()"></div>
+<div class="settings-panel" id="settingsPanel">
+  <div class="sp-head"><h3>⚙️ Settings</h3><button class="icon-btn" onclick="closeSettings()">×</button></div>
+  <div class="sp-body">
+    <div class="sp-group">
+      <div class="sp-group-title">Appearance</div>
+      <div class="sp-row">
+        <div class="sp-row-l"><span class="sp-icon">🌙</span><div><div class="sp-label">Dark Mode</div><div class="sp-sub">Toggle theme</div></div></div>
+        <div class="sp-row-r"><label class="toggle"><input type="checkbox" id="togDark" checked onchange="applyThemeSetting()"><span class="tog-sl"></span></label></div>
+      </div>
+      <div class="sp-row">
+        <div class="sp-row-l"><span class="sp-icon">🔤</span><div><div class="sp-label">Font Size</div><div class="sp-sub">Adjust text size</div></div></div>
+        <div class="sp-row-r"><select class="sp-select" onchange="applyFont(this.value)"><option value="14">Small</option><option value="15" selected>Medium</option><option value="17">Large</option></select></div>
+      </div>
+      <div class="sp-row">
+        <div class="sp-row-l"><span class="sp-icon">✨</span><div><div class="sp-label">Animations</div><div class="sp-sub">Smooth transitions</div></div></div>
+        <div class="sp-row-r"><label class="toggle"><input type="checkbox" id="togAnim" checked><span class="tog-sl"></span></label></div>
+      </div>
+    </div>
+    <div class="sp-group">
+      <div class="sp-group-title">Notifications</div>
+      <div class="sp-row">
+        <div class="sp-row-l"><span class="sp-icon">🏆</span><div><div class="sp-label">XP Popups</div><div class="sp-sub">Show XP earned alerts</div></div></div>
+        <div class="sp-row-r"><label class="toggle"><input type="checkbox" id="togXP" checked><span class="tog-sl"></span></label></div>
+      </div>
+      <div class="sp-row">
+        <div class="sp-row-l"><span class="sp-icon">📅</span><div><div class="sp-label">Exam Alerts</div><div class="sp-sub">Countdown reminders</div></div></div>
+        <div class="sp-row-r"><label class="toggle"><input type="checkbox" id="togExam" checked><span class="tog-sl"></span></label></div>
+      </div>
+    </div>
+    <div class="sp-group">
+      <div class="sp-group-title">Account</div>
+      <div class="sp-row" style="cursor:pointer;" onclick="openEditProfile()">
+        <div class="sp-row-l"><span class="sp-icon">✏️</span><div><div class="sp-label">Edit Profile</div><div class="sp-sub">Update your details</div></div></div>
+        <div class="sp-row-r" style="color:var(--text2);font-size:18px;">›</div>
+      </div>
+      <div class="sp-row">
+        <div class="sp-row-l"><span class="sp-icon">🔄</span><div><div class="sp-label">Reset Progress</div><div class="sp-sub">Clear all topic checks</div></div></div>
+        <div class="sp-row-r"><button onclick="resetProg()" style="background:rgba(249,115,22,.12);border:1.5px solid rgba(249,115,22,.3);color:var(--accent2);border-radius:8px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;">Reset</button></div>
+      </div>
+    </div>
+    <button class="sp-danger-btn" onclick="confirmLogout()">🚪 Log Out of Account</button>
+    <button class="sp-danger-btn" style="margin-top:10px;background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.25);" onclick="confirmDelete()">🗑️ Delete Account Permanently</button>
+  </div>
+</div>
+
+<!-- ═══ LOGOUT CONFIRM ═══ -->
+<div class="confirm-back" id="logoutConfirm">
+  <div class="confirm-box">
+    <div class="confirm-icon">🚪</div>
+    <h3>Log Out?</h3>
+    <p>You'll return to the login page. Your session data won't be saved.</p>
+    <div class="confirm-btns">
+      <button class="btn-cancel-sm" onclick="closeConfirm('logoutConfirm')">Cancel</button>
+      <button class="btn-danger-sm" onclick="doLogout()">Yes, Log Out</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DELETE CONFIRM ═══ -->
+<div class="confirm-back" id="deleteConfirm">
+  <div class="confirm-box">
+    <div class="confirm-icon">⚠️</div>
+    <h3>Delete Account?</h3>
+    <p>This will permanently delete your account and all progress. This action cannot be undone.</p>
+    <div class="confirm-btns">
+      <button class="btn-cancel-sm" onclick="closeConfirm('deleteConfirm')">Cancel</button>
+      <button class="btn-danger-sm" onclick="doDelete()">Delete Forever</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+//  DATA
+// ══════════════════════════════════════════
+
+const BRANCH_DATA = {
+  CSE:{
+    sem1:[
+      {code:"MA101",name:"Engineering Mathematics I",icon:"➕",color:"#3ecf8e",
+       topics:["Matrices & Determinants","Differential Calculus","Integral Calculus","Series Expansion","Vector Calculus & Applications"],
+       skills:["Calculus","Algebra","Problem Solving"]},
+      {code:"CS101",name:"Programming in C",icon:"💻",color:"#38bdf8",
+       topics:["Variables, Data Types & Operators","Control Flow — if/else/loops","Functions & Recursion","Arrays, Strings & Pointers","File I/O & Structures"],
+       skills:["Coding","Debugging","Logic Building"]},
+      {code:"PH101",name:"Engineering Physics",icon:"⚛️",color:"#a78bfa",
+       topics:["Quantum Mechanics Basics","Wave Optics — Interference & Diffraction","Semiconductor Physics","Lasers & Fiber Optics","Nanotechnology Intro"],
+       skills:["Physics","Analytical Thinking"]},
+      {code:"CY101",name:"Engineering Chemistry",icon:"🧪",color:"#fb923c",
+       topics:["Electrochemistry & Cells","Corrosion & Protection","Polymers & Applications","Fuels & Combustion","Water Technology & Treatment"],
+       skills:["Chemistry","Environmental Awareness"]},
+      {code:"EG101",name:"Engineering Drawing",icon:"📐",color:"#34d399",
+       topics:["Orthographic Projection","Isometric & Sectional Views","Auxiliary & Development Views","AutoCAD Basics","3D Solid Modeling"],
+       skills:["Design","Visualization","CAD"]},
+    ],
+    sem2:[
+      {code:"MA102",name:"Engineering Mathematics II",icon:"📐",color:"#818cf8",
+       topics:["Ordinary Differential Equations","Partial Differential Equations","Fourier Series & Transforms","Laplace Transforms","Z-Transforms & Applications"],
+       skills:["Signal Processing","Mathematics"]},
+      {code:"CS102",name:"Data Structures",icon:"🗂️",color:"#2dd4bf",
+       topics:["Arrays, Linked Lists & Complexity","Stacks, Queues & Applications","Trees — BST, AVL, Heaps","Graphs — BFS, DFS, Shortest Path","Sorting & Searching Algorithms"],
+       skills:["DSA","Algorithms","Coding"]},
+      {code:"CS103",name:"Digital Logic Design",icon:"🔧",color:"#f472b6",
+       topics:["Number Systems & Boolean Algebra","Logic Gates & Karnaugh Maps","Combinational Circuits — MUX, Adders","Sequential Circuits — FF, Counters","Finite State Machines"],
+       skills:["Digital Electronics","Logic Design"]},
+      {code:"CS104",name:"Discrete Mathematics",icon:"🔢",color:"#facc15",
+       topics:["Set Theory & Relations","Graph Theory & Algorithms","Propositional & Predicate Logic","Combinatorics & Permutations","Recursion & Recurrence Relations"],
+       skills:["Logic","Mathematics","Proof Writing"]},
+      {code:"CS105",name:"Computer Organization",icon:"🖥️",color:"#f87171",
+       topics:["CPU Architecture & ISA","Memory Hierarchy — Cache, RAM, Virtual","Instruction Cycle & Microprogramming","Pipelining & Hazards","I/O Systems & Interrupts"],
+       skills:["Computer Architecture","Systems"]},
+    ]
+  },
+  ECE:{
+    sem1:[
+      {code:"MA101",name:"Engineering Mathematics I",icon:"➕",color:"#3ecf8e",topics:["Matrices","Differential Calculus","Integral Calculus","Series Expansion","Vector Calculus"],skills:["Maths","Analytical"]},
+      {code:"EC101",name:"Basic Electronics",icon:"⚡",color:"#38bdf8",topics:["Semiconductor Fundamentals","Diodes & Rectifier Circuits","BJT Biasing & Amplifiers","FETs & MOSFETs","Op-Amp Basics"],skills:["Electronics","Circuits"]},
+      {code:"PH101",name:"Engineering Physics",icon:"⚛️",color:"#a78bfa",topics:["Wave Mechanics","EM Wave Theory","Optics & Interference","Semiconductor Devices","Lasers & Fiber Optics"],skills:["Physics"]},
+      {code:"EC102",name:"Circuit Theory",icon:"🔌",color:"#fb923c",topics:["Ohm's Law, KVL & KCL","Network Theorems","AC Circuit Analysis","Resonance & Filters","Two-Port Networks"],skills:["Circuits","Network Analysis"]},
+      {code:"EG101",name:"Engineering Drawing",icon:"📐",color:"#34d399",topics:["Orthographic Projections","Sectional Views","Isometric Drawing","AutoCAD Intro","3D Modeling"],skills:["Design","CAD"]},
+    ],
+    sem2:[
+      {code:"MA102",name:"Engineering Mathematics II",icon:"📐",color:"#818cf8",topics:["ODEs","PDEs","Fourier Series","Laplace Transforms","Z-Transforms"],skills:["Maths"]},
+      {code:"EC103",name:"Analog Electronics",icon:"📡",color:"#2dd4bf",topics:["BJT & FET Amplifiers","Feedback & Stability","Oscillators","Power Amplifiers","Modulation Techniques"],skills:["Analog","RF Design"]},
+      {code:"EC104",name:"Digital Electronics",icon:"💡",color:"#f472b6",topics:["Boolean Algebra & Logic Gates","Flip-Flops & Latches","Counters & Shift Registers","ADC & DAC Circuits","FPGA Basics"],skills:["Digital","VLSI"]},
+      {code:"EC105",name:"Signals & Systems",icon:"📶",color:"#facc15",topics:["Continuous & Discrete Signals","Sampling Theorem","Fourier Analysis","Convolution & Correlation","LTI Systems & Transfer Functions"],skills:["DSP","Signal Processing"]},
+      {code:"EC106",name:"Electromagnetic Theory",icon:"🌐",color:"#f87171",topics:["Maxwell's Equations","Plane Wave Propagation","Transmission Line Theory","Microwave Engineering","Antenna Fundamentals"],skills:["EM Theory","Antennas"]},
+    ]
+  },
+  MECH:{
+    sem1:[
+      {code:"MA101",name:"Engineering Mathematics I",icon:"➕",color:"#3ecf8e",topics:["Matrices","Differential Calculus","Integral Calculus","Series","Vector Calculus"],skills:["Maths"]},
+      {code:"ME101",name:"Engineering Mechanics",icon:"⚙️",color:"#38bdf8",topics:["Statics & Equilibrium","Dynamics of Particles","Friction & Applications","Moment of Inertia","Simple Machines"],skills:["Mechanics","Physics"]},
+      {code:"PH101",name:"Engineering Physics",icon:"⚛️",color:"#a78bfa",topics:["Wave Motion","Thermodynamics","Optics","Modern Physics","Lasers"],skills:["Physics"]},
+      {code:"ME102",name:"Engineering Drawing",icon:"📐",color:"#fb923c",topics:["Orthographic Views","Isometric Drawing","Sectional Views","AutoCAD 2D","Assembly Drawings"],skills:["Design","CAD"]},
+      {code:"CY101",name:"Engineering Chemistry",icon:"🧪",color:"#34d399",topics:["Polymers & Composites","Fuels & Energy","Corrosion Engineering","Water Chemistry","Lubricants & Tribology"],skills:["Chemistry","Materials"]},
+    ],
+    sem2:[
+      {code:"MA102",name:"Engineering Mathematics II",icon:"📐",color:"#818cf8",topics:["ODEs","Vector Calculus","PDEs","Numerical Methods","Statistics & Probability"],skills:["Maths"]},
+      {code:"ME103",name:"Thermodynamics",icon:"🌡️",color:"#2dd4bf",topics:["Laws of Thermodynamics","Carnot & Rankine Cycles","Entropy & Enthalpy","Psychrometrics","Refrigeration Systems"],skills:["Thermal Engineering","Energy"]},
+      {code:"ME104",name:"Material Science",icon:"🔩",color:"#f472b6",topics:["Crystal Structures & Defects","Phase Diagrams & Equilibrium","Heat Treatment Processes","Composite Materials","Non-Destructive Testing"],skills:["Materials","Manufacturing"]},
+      {code:"ME105",name:"Fluid Mechanics",icon:"💧",color:"#facc15",topics:["Fluid Properties & Statics","Bernoulli Equation","Flow Types & Reynolds Number","Pipe Flow & Losses","Boundary Layer Theory"],skills:["Fluid Dynamics","Hydraulics"]},
+      {code:"ME106",name:"Manufacturing Processes",icon:"🏭",color:"#f87171",topics:["Casting — Sand, Die, Investment","Welding — Arc, MIG, TIG","Machining — Turning, Milling","Metal Forming — Rolling, Forging","Surface Finishing & QC"],skills:["Manufacturing","Workshop"]},
+    ]
+  },
+  EEE:{
+    sem1:[
+      {code:"MA101",name:"Engineering Mathematics I",icon:"➕",color:"#3ecf8e",topics:["Matrices & Determinants","Differential Calculus","Integral Calculus","Series Expansion","Vector Calculus"],skills:["Maths","Calculus"]},
+      {code:"EE101",name:"Basic Electrical Engineering",icon:"⚡",color:"#38bdf8",topics:["DC Circuits & Network Theorems","AC Fundamentals & Phasors","Single-Phase Transformers","DC Machines — Motors & Generators","Three-Phase Systems & Power"],skills:["Circuits","Electrical Machines"]},
+      {code:"PH101",name:"Engineering Physics",icon:"⚛️",color:"#a78bfa",topics:["Quantum Mechanics","Electromagnetic Theory","Optics","Semiconductor Physics","Superconductors & Lasers"],skills:["Physics","EM Theory"]},
+      {code:"EE102",name:"Circuit Analysis",icon:"🔌",color:"#fb923c",topics:["KVL, KCL & Mesh Analysis","Network Theorems — Thevenin, Norton","Transient Analysis — RC, RL, RLC","AC Power & Power Factor","Resonance & Filters"],skills:["Circuit Analysis","Network Theory"]},
+      {code:"EG101",name:"Engineering Drawing",icon:"📐",color:"#34d399",topics:["Orthographic Projection","Sectional Views","Isometric Drawing","AutoCAD 2D Basics","Electrical Schematic Drawing"],skills:["Design","CAD"]},
+    ],
+    sem2:[
+      {code:"MA102",name:"Engineering Mathematics II",icon:"📐",color:"#818cf8",topics:["ODEs","Fourier Series","Laplace Transforms","Z-Transforms","Numerical Methods"],skills:["Maths","Signal Analysis"]},
+      {code:"EE103",name:"Electrical Machines I",icon:"🔧",color:"#2dd4bf",topics:["Transformer Construction & Testing","DC Generator Characteristics","DC Motor Speed Control","Three-Phase Induction Motor","Synchronous Generator Basics"],skills:["Electrical Machines","Power Systems"]},
+      {code:"EE104",name:"Measurements & Instrumentation",icon:"📏",color:"#f472b6",topics:["Measurement Errors & Accuracy","PMMC & Moving Iron Instruments","Oscilloscope & Signal Analysis","Transducers — RTD, Thermocouple","Digital Multimeters & Power Analyzers"],skills:["Instrumentation","Measurement"]},
+      {code:"EE105",name:"Power Systems I",icon:"🏭",color:"#facc15",topics:["Power Generation — Thermal, Hydro, Nuclear","Transmission Line Parameters","Per Unit System & Load Flow","Underground Cables & Insulators","Substation Equipment & Switchgear"],skills:["Power Systems","High Voltage"]},
+      {code:"EE106",name:"Electronic Devices",icon:"💡",color:"#f87171",topics:["PN Junction & Diode Characteristics","Bipolar Junction Transistors","Field Effect Transistors","Op-Amp Applications","Voltage Regulators & ICs"],skills:["Electronics","Semiconductor"]},
+    ]
+  },
+  CIVIL:{
+    sem1:[
+      {code:"MA101",name:"Engineering Mathematics I",icon:"➕",color:"#3ecf8e",topics:["Matrices & Determinants","Differential Calculus","Integral Calculus","Series","Vector Calculus"],skills:["Maths"]},
+      {code:"CE101",name:"Engineering Mechanics",icon:"⚙️",color:"#38bdf8",topics:["Statics — Forces & Equilibrium","Trusses & Frames Analysis","Friction & Wedge Problems","Dynamics — Newton's Laws","Moment of Inertia & Centroid"],skills:["Mechanics","Structural Analysis"]},
+      {code:"CE102",name:"Engineering Drawing",icon:"📐",color:"#a78bfa",topics:["Orthographic Projections","Sectional Views","Isometric Drawing","Civil Engineering Drawings","AutoCAD for Civil"],skills:["Design","AutoCAD"]},
+      {code:"CE103",name:"Building Materials",icon:"🧱",color:"#fb923c",topics:["Properties of Bricks & Stones","Cement — Types & Testing","Concrete Mix Design","Timber & Bamboo Properties","Steel, Glass & Modern Materials"],skills:["Materials","Construction"]},
+      {code:"CE104",name:"Surveying",icon:"🗺️",color:"#34d399",topics:["Chain Surveying & Compass Survey","Plane Table Surveying","Levelling & Contouring","Theodolite Traversing","Total Station & GPS Survey"],skills:["Surveying","GIS"]},
+    ],
+    sem2:[
+      {code:"MA102",name:"Engineering Mathematics II",icon:"📐",color:"#818cf8",topics:["ODEs & PDEs","Fourier Analysis","Numerical Methods","Statistics","Probability Theory"],skills:["Maths"]},
+      {code:"CE105",name:"Strength of Materials",icon:"🔩",color:"#2dd4bf",topics:["Stress & Strain — Elastic Constants","Bending Moment & Shear Force Diagrams","Theory of Bending & Torsion","Deflection of Beams","Columns & Struts — Euler's Formula"],skills:["Structural Analysis","Mechanics"]},
+      {code:"CE106",name:"Fluid Mechanics",icon:"💧",color:"#f472b6",topics:["Fluid Properties & Hydrostatics","Bernoulli Equation & Applications","Flow Measurement — Venturimeter","Pipe Flow & Losses","Open Channel Flow Basics"],skills:["Hydraulics","Fluid Dynamics"]},
+      {code:"CE107",name:"Engineering Geology",icon:"🪨",color:"#facc15",topics:["Rock Classification & Mineralogy","Geological Structures & Faults","Soil Formation & Classification","Groundwater & Aquifers","Site Investigation Methods"],skills:["Geology","Geotechnical"]},
+      {code:"CE108",name:"Construction Technology",icon:"🏗️",color:"#f87171",topics:["Foundation Types & Selection","Masonry — Brick & Stone","Roofing Systems & Flooring","Plastering, Painting & Finishing","Green Building Concepts"],skills:["Construction","Project Management"]},
+    ]
+  },
+  IT:{
+    sem1:[
+      {code:"MA101",name:"Engineering Mathematics I",icon:"➕",color:"#3ecf8e",topics:["Matrices & Determinants","Differential Calculus","Integral Calculus","Series Expansion","Vector Calculus"],skills:["Maths"]},
+      {code:"IT101",name:"Programming in Python",icon:"🐍",color:"#38bdf8",topics:["Variables, Data Types & Operators","Control Flow & Loops","Functions & Lambda","Lists, Tuples, Dicts & Sets","File Handling & Exception Handling"],skills:["Python","Coding","Scripting"]},
+      {code:"PH101",name:"Engineering Physics",icon:"⚛️",color:"#a78bfa",topics:["Quantum Mechanics Basics","Wave Optics","Semiconductor Physics","Lasers & Fiber Optics","Nanotechnology Intro"],skills:["Physics"]},
+      {code:"IT102",name:"Web Technology Fundamentals",icon:"🌐",color:"#fb923c",topics:["HTML5 — Semantic Structure","CSS3 — Flexbox & Grid","JavaScript Basics — DOM & Events","Responsive Design & Media Queries","HTTP Protocol & Web Browsers"],skills:["Web Dev","HTML/CSS/JS"]},
+      {code:"EG101",name:"Engineering Drawing",icon:"📐",color:"#34d399",topics:["Orthographic Projections","Sectional Views","Isometric Drawing","AutoCAD Basics","3D Modeling"],skills:["Design","CAD"]},
+    ],
+    sem2:[
+      {code:"MA102",name:"Engineering Mathematics II",icon:"📐",color:"#818cf8",topics:["ODEs","Fourier Series","Laplace Transforms","Probability & Statistics","Numerical Methods"],skills:["Maths"]},
+      {code:"IT103",name:"Data Structures",icon:"🗂️",color:"#2dd4bf",topics:["Arrays, Linked Lists & Complexity","Stacks & Queues","Trees — BST, AVL, Heaps","Graphs — BFS, DFS","Sorting & Hashing"],skills:["DSA","Algorithms"]},
+      {code:"IT104",name:"Database Management Systems",icon:"🗄️",color:"#f472b6",topics:["ER Model & Relational Algebra","SQL — DDL, DML, DCL","Normalization — 1NF to BCNF","Transactions & Concurrency Control","Indexing & Query Optimization"],skills:["SQL","Database Design"]},
+      {code:"IT105",name:"Computer Networks",icon:"🌐",color:"#facc15",topics:["OSI & TCP/IP Models","Data Link Layer — MAC, Ethernet","IP Addressing & Subnetting","Routing — RIP, OSPF, BGP","Application Layer — HTTP, DNS, FTP"],skills:["Networking","Protocols"]},
+      {code:"IT106",name:"Operating Systems",icon:"🖥️",color:"#f87171",topics:["Process Management & Scheduling","Threads & Concurrency","Memory Management — Paging, Segmentation","File Systems & I/O Management","Deadlock & Protection"],skills:["OS","Systems"]},
+    ]
+  },
+  AIDS:{
+    sem1:[
+      {code:"MA101",name:"Engineering Mathematics I",icon:"➕",color:"#3ecf8e",topics:["Matrices & Linear Algebra","Differential Calculus","Integral Calculus","Probability & Distributions","Statistics & Hypothesis Testing"],skills:["Maths","Statistics"]},
+      {code:"AI101",name:"Python for AI & DS",icon:"🐍",color:"#38bdf8",topics:["Python Basics & Data Types","NumPy & Pandas — Data Manipulation","Matplotlib & Seaborn — Visualization","Control Flow & Functions","File I/O & Libraries"],skills:["Python","Data Analysis"]},
+      {code:"AI102",name:"Introduction to AI",icon:"🤖",color:"#a78bfa",topics:["History & Applications of AI","Search Algorithms — BFS, DFS, A*","Knowledge Representation","Heuristic Methods","Game Playing — Minimax"],skills:["AI","Problem Solving"]},
+      {code:"AI103",name:"Statistics for Data Science",icon:"📊",color:"#fb923c",topics:["Descriptive Statistics","Probability Theory & Bayes Theorem","Distributions — Normal, Binomial, Poisson","Hypothesis Testing — t-test, chi-square","Regression & Correlation"],skills:["Statistics","Data Analysis"]},
+      {code:"EG101",name:"Engineering Drawing",icon:"📐",color:"#34d399",topics:["Orthographic Projections","Isometric Drawing","AutoCAD Basics","Data Flow Diagrams","System Architecture Diagrams"],skills:["Design","Visualization"]},
+    ],
+    sem2:[
+      {code:"MA102",name:"Discrete Mathematics",icon:"📐",color:"#818cf8",topics:["Set Theory & Relations","Graph Theory","Propositional Logic","Combinatorics","Recurrence Relations"],skills:["Maths","Logic"]},
+      {code:"AI104",name:"Machine Learning Fundamentals",icon:"🧠",color:"#2dd4bf",topics:["Supervised Learning — Linear & Logistic Regression","Decision Trees & Random Forest","Support Vector Machines","Unsupervised Learning — K-Means, PCA","Model Evaluation & Cross Validation"],skills:["ML","Scikit-Learn","Python"]},
+      {code:"AI105",name:"Database for Data Science",icon:"🗄️",color:"#f472b6",topics:["SQL — Advanced Queries & Joins","NoSQL Databases — MongoDB","Data Warehousing & ETL","Big Data Intro — Hadoop, Spark","Cloud Data Platforms — AWS RDS"],skills:["SQL","Database","Big Data"]},
+      {code:"AI106",name:"Data Structures & Algorithms",icon:"🗂️",color:"#facc15",topics:["Arrays, Lists & Complexity Analysis","Trees & Hash Tables","Dynamic Programming","Graph Algorithms","Greedy Algorithms"],skills:["DSA","Algorithms"]},
+      {code:"AI107",name:"Data Visualization",icon:"📉",color:"#f87171",topics:["Visualization Principles & Chart Types","Matplotlib & Seaborn","Plotly & Interactive Dashboards","Tableau Basics","Storytelling with Data"],skills:["Data Viz","Tableau","Python"]},
+    ]
+  },
+  CHEM:{
+    sem1:[
+      {code:"MA101",name:"Engineering Mathematics I",icon:"➕",color:"#3ecf8e",topics:["Matrices & Determinants","Differential Calculus","Integral Calculus","Series Expansion","Vector Calculus"],skills:["Maths"]},
+      {code:"CH101",name:"Engineering Chemistry",icon:"🧪",color:"#38bdf8",topics:["Chemical Bonding & Structure","Thermodynamics & Equilibrium","Electrochemistry & Cells","Reaction Kinetics","Spectroscopy Basics"],skills:["Chemistry","Thermodynamics"]},
+      {code:"CH102",name:"Chemical Process Principles",icon:"⚗️",color:"#a78bfa",topics:["Material Balance — Steady & Unsteady","Energy Balance & Enthalpy","Stoichiometry & Conversions","Recycle & Bypass Streams","Process Flow Diagrams"],skills:["Process Engineering","Stoichiometry"]},
+      {code:"PH101",name:"Engineering Physics",icon:"⚛️",color:"#a78bfa",topics:["Quantum Chemistry & Wave Mechanics","Thermodynamics","Optics & Spectroscopy","Nuclear Physics","Lasers & Applications"],skills:["Physics","Chemistry"]},
+      {code:"EG101",name:"Engineering Drawing",icon:"📐",color:"#34d399",topics:["Orthographic Projections","Sectional Views","Piping & Instrumentation Diagrams","Process Flow Diagrams","AutoCAD Basics"],skills:["Design","P&ID"]},
+    ],
+    sem2:[
+      {code:"MA102",name:"Engineering Mathematics II",icon:"📐",color:"#818cf8",topics:["ODEs — Chemical Reactor Modelling","PDEs","Numerical Methods for ChE","Statistics & Error Analysis","Laplace Transforms"],skills:["Maths","Modelling"]},
+      {code:"CH103",name:"Fluid Flow Operations",icon:"💧",color:"#2dd4bf",topics:["Fluid Statics & Dynamics","Bernoulli Equation & Applications","Flow in Pipes — Friction & Losses","Pumps, Compressors & Blowers","Filtration & Sedimentation"],skills:["Fluid Mechanics","Unit Operations"]},
+      {code:"CH104",name:"Heat Transfer",icon:"🌡️",color:"#f472b6",topics:["Conduction — Fourier's Law","Convection — Natural & Forced","Radiation Heat Transfer","Heat Exchangers Design","Evaporation & Condensation"],skills:["Heat Transfer","Process Design"]},
+      {code:"CH105",name:"Organic Chemistry",icon:"🔬",color:"#facc15",topics:["Functional Groups & Nomenclature","Reaction Mechanisms — SN1, SN2, E1, E2","Aromatic Chemistry","Polymers & Polymerization","Natural Products & Pharmaceuticals"],skills:["Organic Chemistry","Synthesis"]},
+      {code:"CH106",name:"Thermodynamics for ChE",icon:"🔥",color:"#f87171",topics:["First & Second Laws for Open Systems","Equations of State — van der Waals","Phase Equilibria & VLE","Chemical Reaction Equilibrium","Refrigeration & Liquefaction"],skills:["Thermodynamics","Phase Equilibria"]},
+    ]
+  }
+};
+
+// CAREER DATA
+const CAREER_DATA={
+  CSE:[
+    {icon:"👨‍💻",title:"Software Developer",desc:"Build applications, web services, APIs and platforms. Highest demand across every sector globally.",skills:["Java/Python/JS","DSA","System Design","Git/GitHub"]},
+    {icon:"🤖",title:"AI / ML Engineer",desc:"Design and train intelligent models. Fastest growing and highest compensated field in tech.",skills:["Python","Maths/Stats","TensorFlow/PyTorch","Data Pipelines"]},
+    {icon:"☁️",title:"Cloud / DevOps Engineer",desc:"Architect scalable infrastructure and automate deployment pipelines. Every company is moving to cloud.",skills:["AWS/Azure/GCP","Linux/Bash","Docker/Kubernetes","CI/CD"]},
+    {icon:"🔐",title:"Cybersecurity Analyst",desc:"Protect systems from cyber threats. Critical in banking, defense, healthcare and every digital sector.",skills:["Networking","Cryptography","Ethical Hacking","SIEM Tools"]},
+    {icon:"📊",title:"Data Scientist",desc:"Extract insights from massive datasets to drive business decisions. Combines stats, programming and domain knowledge.",skills:["Python/R","SQL","Statistics","Data Viz"]},
+    {icon:"🌐",title:"Full Stack Developer",desc:"Build complete web products — pixel-perfect frontends to robust backends and databases.",skills:["React/Vue","Node.js","SQL/MongoDB","REST/GraphQL"]},
+  ],
+  ECE:[
+    {icon:"📡",title:"RF / Telecom Engineer",desc:"Design 5G networks, communication systems, antennas and wireless technologies for the connected world.",skills:["EM Theory","Signal Processing","MATLAB","Antenna Design"]},
+    {icon:"🔬",title:"VLSI Design Engineer",desc:"Design and verify integrated circuits and semiconductor chips. Huge demand at Qualcomm, Intel, Samsung.",skills:["VHDL/Verilog","Cadence/Synopsys","Digital Circuits","STA"]},
+    {icon:"🤖",title:"Embedded Systems Engineer",desc:"Program microcontrollers and build smart embedded devices for automotive, medical and industrial applications.",skills:["C/C++","ARM Cortex","RTOS","CAN/I2C/SPI"]},
+    {icon:"📱",title:"IoT Developer",desc:"Connect sensors, devices and cloud platforms to build smart homes, factories and cities.",skills:["MQTT/Zigbee","Python","AWS IoT","Sensor Integration"]},
+    {icon:"⚡",title:"Power Electronics Engineer",desc:"Design motor drives, converters and power management ICs for EVs, renewable energy and automation.",skills:["Power Circuits","MATLAB/Simulink","Control Theory","PCB Design"]},
+    {icon:"🎵",title:"DSP Engineer",desc:"Process audio, video, radar and biomedical signals for real-time embedded and cloud applications.",skills:["MATLAB","Filter Design","FPGA","Algorithm Optimization"]},
+  ],
+  EEE:[
+    {icon:"⚡",title:"Power Systems Engineer",desc:"Design, operate and maintain electricity generation, transmission and distribution networks.",skills:["Power Systems","ETAP/PSCAD","Load Flow Analysis","High Voltage"]},
+    {icon:"🔋",title:"EV / Battery Engineer",desc:"Work on electric vehicle powertrains, BMS and battery technologies — the future of transport.",skills:["Power Electronics","BMS","MATLAB/Simulink","Li-ion Batteries"]},
+    {icon:"🌱",title:"Renewable Energy Engineer",desc:"Design solar, wind and green hydrogen systems reshaping global energy supply.",skills:["Solar/Wind Systems","Grid Integration","MATLAB","Power Electronics"]},
+    {icon:"🏭",title:"Electrical Design Engineer",desc:"Design electrical systems for buildings, industries and infrastructure — switchgear, panels and wiring.",skills:["AutoCAD Electrical","IEC Standards","Protection Relays","SCADA"]},
+    {icon:"🤖",title:"Automation & Control Engineer",desc:"Design PLC/SCADA systems for industrial automation, robotics and smart manufacturing.",skills:["PLC Programming","SCADA","Control Theory","Ladder Logic"]},
+    {icon:"📏",title:"Instrumentation Engineer",desc:"Install and maintain measurement and control instruments in process industries — oil, gas, pharma.",skills:["Transducers","DCS Systems","Calibration","P&ID Reading"]},
+  ],
+  CIVIL:[
+    {icon:"🏗️",title:"Structural Engineer",desc:"Design safe and efficient buildings, bridges, dams and industrial structures using advanced analysis tools.",skills:["STAAD Pro/ETABS","RCC & Steel Design","IS Codes","AutoCAD"]},
+    {icon:"🛣️",title:"Transportation Engineer",desc:"Plan and design highways, flyovers, metro systems and airports for urban and rural connectivity.",skills:["Highway Design","Traffic Engineering","GIS/GPS","AutoCAD Civil 3D"]},
+    {icon:"💧",title:"Water Resources Engineer",desc:"Design irrigation, flood control, water supply and drainage systems for sustainable water management.",skills:["Hydrology","Hydraulics","HEC-RAS","GIS"]},
+    {icon:"🏙️",title:"Urban & Town Planner",desc:"Plan sustainable cities — zoning, land use, infrastructure development and smart city solutions.",skills:["GIS/ArcGIS","Urban Design","AutoCAD","Policy & Regulations"]},
+    {icon:"🌍",title:"Geotechnical Engineer",desc:"Investigate soil and rock for safe foundation design of buildings, tunnels and retaining structures.",skills:["Soil Testing","Foundation Design","PLAXIS","IS 1904"]},
+    {icon:"🏢",title:"Construction Project Manager",desc:"Lead construction projects from planning to handover — managing cost, time, quality and safety.",skills:["MS Project","Primavera","BOQ Preparation","Contract Management"]},
+  ],
+  IT:[
+    {icon:"🌐",title:"Full Stack Web Developer",desc:"Build complete web applications from frontend UI to backend APIs and databases.",skills:["React/Angular","Node.js/Django","SQL/MongoDB","REST APIs"]},
+    {icon:"🔒",title:"Cybersecurity Specialist",desc:"Secure networks and applications from cyber attacks. Every company needs skilled security professionals.",skills:["Ethical Hacking","OWASP","Kali Linux","Network Security"]},
+    {icon:"☁️",title:"Cloud Solutions Architect",desc:"Design and deploy scalable cloud infrastructure on AWS, Azure or GCP for enterprises.",skills:["AWS/Azure","Terraform","Docker/Kubernetes","Networking"]},
+    {icon:"📱",title:"Mobile App Developer",desc:"Build iOS and Android applications for millions of users across diverse industries.",skills:["Flutter/React Native","Dart/JavaScript","Firebase","UI/UX Design"]},
+    {icon:"🗄️",title:"Database Administrator",desc:"Design, optimize and manage databases ensuring performance, security and availability.",skills:["SQL/PostgreSQL","MongoDB","Query Optimization","Backup & Recovery"]},
+    {icon:"🤖",title:"AI Application Developer",desc:"Integrate AI and ML models into real-world products and software applications.",skills:["Python","REST APIs","Hugging Face","Prompt Engineering"]},
+  ],
+  MECH:[
+    {icon:"🏎️",title:"Automotive Engineer",desc:"Design engines, vehicles and next-gen EV powertrains. India's auto sector is one of the world's largest employers.",skills:["CAD — CATIA/SolidWorks","FEA/CFD","Thermodynamics","Manufacturing"]},
+    {icon:"✈️",title:"Aerospace Engineer",desc:"Design aircraft, spacecraft and defense systems. ISRO, DRDO and global OEMs actively hire MECH graduates.",skills:["Fluid Mechanics","Material Science","ANSYS","Propulsion"]},
+    {icon:"🤖",title:"Robotics & Automation Eng.",desc:"Build robotic arms, autonomous systems and factory automation for Industry 4.0.",skills:["Kinematics","Control Systems","ROS/PLC","Python/MATLAB"]},
+    {icon:"🌡️",title:"Thermal / HVAC Engineer",desc:"Design heating, cooling and energy systems for buildings, industries and data centers.",skills:["Thermodynamics","Fluid Mechanics","AutoCAD MEP","Energy Simulation"]},
+    {icon:"🏭",title:"Manufacturing / Production Eng.",desc:"Optimize production lines, implement lean manufacturing and drive quality control in factories.",skills:["Lean/Six Sigma","CNC Programming","CAM","Quality Tools"]},
+    {icon:"🌱",title:"Renewable Energy Engineer",desc:"Work on solar, wind and green hydrogen technologies reshaping global energy supply.",skills:["Thermodynamics","Power Systems","Grid Integration","MATLAB"]},
+  ],
+  AIDS:[
+    {icon:"🧠",title:"Machine Learning Engineer",desc:"Build and deploy production ML models that power recommendations, fraud detection and automation.",skills:["Python","Scikit-Learn","TensorFlow/PyTorch","MLflow"]},
+    {icon:"📊",title:"Data Scientist",desc:"Extract insights from complex datasets to guide strategic business and product decisions.",skills:["Python/R","SQL","Statistics","Data Visualization"]},
+    {icon:"📈",title:"Data Analyst",desc:"Analyze and visualize business data to identify trends, KPIs and growth opportunities.",skills:["SQL","Excel/Power BI","Tableau","Statistics"]},
+    {icon:"🤖",title:"AI Research Engineer",desc:"Work on cutting-edge NLP, computer vision and generative AI at research labs and AI companies.",skills:["Deep Learning","PyTorch","Research Papers","CUDA/GPU"]},
+    {icon:"☁️",title:"Data Engineer",desc:"Build robust data pipelines, ETL processes and data warehouses to power analytics at scale.",skills:["Apache Spark","Kafka","AWS/GCP","SQL/Airflow"]},
+    {icon:"🔍",title:"Business Intelligence Developer",desc:"Create dashboards, reports and BI solutions enabling data-driven decisions across organizations.",skills:["Power BI/Tableau","SQL","DAX","Data Modeling"]},
+  ],
+  CHEM:[
+    {icon:"🏭",title:"Process Engineer",desc:"Design and optimize chemical manufacturing processes for petroleum, pharma, food and materials industries.",skills:["Aspen Plus/HYSYS","Mass & Energy Balances","Process Optimization","P&ID"]},
+    {icon:"🧪",title:"R&D / Research Chemist",desc:"Develop new materials, drugs, polymers and specialty chemicals in laboratory and pilot plant settings.",skills:["Analytical Chemistry","Lab Techniques","GC/MS/HPLC","Research Methodology"]},
+    {icon:"🛢️",title:"Petroleum / Refinery Engineer",desc:"Work with oil & gas companies on refining, petrochemical production and energy extraction.",skills:["Refinery Processes","Aspen HYSYS","Thermodynamics","Safety & HAZOP"]},
+    {icon:"💊",title:"Pharmaceutical Process Engineer",desc:"Scale up drug manufacturing processes ensuring safety, quality and regulatory compliance.",skills:["GMP/FDA Regulations","Batch Process Design","Quality Control","Validation"]},
+    {icon:"🌿",title:"Environmental Engineer",desc:"Design waste treatment systems, control pollution and ensure regulatory compliance in process industries.",skills:["EIA/EMP","Wastewater Treatment","Environmental Laws","Process Safety"]},
+    {icon:"🔬",title:"Materials / Polymer Engineer",desc:"Develop advanced polymers, composites, coatings and smart materials for industrial applications.",skills:["Polymer Chemistry","Material Characterization","DSC/TGA/XRD","Formulation Design"]},
+  ],
+};
+
+const QUOTES=[
+  {t:"The secret of getting ahead is getting started.",a:"Mark Twain"},
+  {t:"Education is the passport to the future. Tomorrow belongs to those who prepare today.",a:"Malcolm X"},
+  {t:"Don't watch the clock; do what it does — keep going.",a:"Sam Levenson"},
+  {t:"The expert in anything was once a beginner.",a:"Helen Hayes"},
+  {t:"Success is the sum of small efforts, repeated day in and day out.",a:"Robert Collier"},
+  {t:"Dream big. Start small. Act now.",a:"Robin Sharma"},
+  {t:"It does not matter how slowly you go as long as you do not stop.",a:"Confucius"},
+  {t:"The beautiful thing about learning is nobody can take it away from you.",a:"B.B. King"},
+  {t:"First year is where lifelong habits are formed. Choose wisely.",a:"IIT Madras Faculty"},
+  {t:"Push yourself. No one else is going to do it for you.",a:"Unknown"},
+  {t:"Hard work beats talent when talent doesn't work hard.",a:"Tim Notke"},
+  {t:"Your future self is watching you right now through your memories.",a:"Aubrey de Grey"},
+];
+
+const SENIORS=[
+  {name:"Karthikeyan R.",initials:"KR",color:"#3ecf8e",year:"Final Year, CSE",college:"NIT Trichy",cgpa:"9.1",placed:"Google SWE Intern",likes:247,
+   text:"Start DSA from semester 1, not after. I spent my entire first semester thinking I had time. Array problems alone took two months to get comfortable with. LeetCode Easy → Medium → Hard is the only real path. The earlier you start, the more relaxed your placement year will be."},
+  {name:"Meghana Subramaniam",initials:"MS",color:"#f472b6",year:"3rd Year, CSE",college:"BITS Pilani, Goa",cgpa:"8.7",placed:"Microsoft SDE Intern",likes:189,
+   text:"Don't bunk labs. I got my internship because I could demo an actual embedded system I built in a first-year electronics lab. That single project carried my resume more than my coursework. Labs are where theory becomes real — treat them seriously."},
+  {name:"Arjun Mehta",initials:"AM",color:"#f97316",year:"Final Year, ECE",college:"IIT Bombay",cgpa:"8.4",placed:"Qualcomm — VLSI Engineer",likes:178,
+   text:"For ECE students — learn Verilog and C in semester 1 itself. Everyone regrets not doing it earlier. The gap between understanding digital theory and writing actual RTL is huge and takes months. Start a simple UART or ALU project as soon as you learn flip-flops."},
+  {name:"Priya Raghunathan",initials:"PR",color:"#38bdf8",year:"3rd Year, AI&DS",college:"PSG Tech, Coimbatore",cgpa:"9.3",placed:"Research Intern, IISc Bangalore",likes:214,
+   text:"Mathematics is not your enemy. Linear algebra and probability from first year are literally the backbone of every ML model. I spent extra time with my maths professor in semester 1 and it paid off immensely by third year. Build a strong foundation — it compounds."},
+  {name:"Rohit Nambiar",initials:"RN",color:"#a78bfa",year:"Final Year, IT",college:"VIT Vellore",cgpa:"8.9",placed:"Flipkart — SDE 1",likes:156,
+   text:"Build something visible in first year. Even a simple weather app or a calculator on GitHub matters. The habit of shipping completed projects is rarer than you think. By final year, students with 10 GitHub projects have a massive edge over those who just scored marks."},
+  {name:"Ananya Krishnan",initials:"AK",color:"#fb923c",year:"3rd Year, MECH",college:"College of Engineering, Guindy (CEG)",cgpa:"8.2",placed:"DRDO Project Intern",likes:143,
+   text:"Join a technical club in the first month — SAE, robotics, BAJA, anything. I joined CEG's SAE chapter in week two. The real-world projects, tight deadlines, and mentorship from seniors gave me more practical skills than two years of classroom theory combined."},
+  {name:"Vivek Sundaram",initials:"VS",color:"#34d399",year:"Final Year, EEE",college:"Amrita Vishwa Vidyapeetham, Coimbatore",cgpa:"8.6",placed:"L&T Technology Services",likes:131,
+   text:"Don't ignore Engineering Drawing or Physics labs because they feel boring. The spatial thinking and systematic problem-solving you develop there transfers directly to every technical role. I design control panels now and use those skills daily without realising they came from first year."},
+  {name:"Deepika Menon",initials:"DM",color:"#facc15",year:"2nd Year, CSE",college:"Amrita School of Engineering, Bengaluru",cgpa:"9.0",placed:"Smart India Hackathon Winner — 2024",likes:198,
+   text:"Participate in at least one hackathon in first year. Even if you don't place, you'll build a working project under 36-hour pressure, present to judges, and meet brilliant peers from other colleges. My current startup co-founder — we met at SIH during semester 1."},
+];
+
+
+const BADGES=[
+  {icon:"🌱",name:"First Step",desc:"Completed your 1st topic",check:d=>d>=1},
+  {icon:"📖",name:"Bookworm",desc:"Completed 10 topics",check:d=>d>=10},
+  {icon:"🔥",name:"On Fire",desc:"Completed 20 topics",check:d=>d>=20},
+  {icon:"🎯",name:"Goal Setter",desc:"Completed 5 topics",check:d=>d>=5},
+  {icon:"💡",name:"Bright Mind",desc:"Completed 30 topics",check:d=>d>=30},
+  {icon:"⭐",name:"Rising Star",desc:"Sem 1 — 50% done",check:(d,s1)=>s1>=50},
+  {icon:"🏆",name:"Semester Champion",desc:"Sem 1 — 100% complete",check:(d,s1)=>s1>=100},
+  {icon:"🚀",name:"Scholar",desc:"Completed 40 topics",check:d=>d>=40},
+];
+
+const SUBJ_RESOURCES={
+  MA101:[
+    {icon:"📹",name:"NPTEL — Engineering Mathematics I (IIT Bombay)",url:"https://nptel.ac.in/courses/111101083",tag:"Video"},
+    {icon:"📹",name:"Khan Academy — Calculus Full Course",url:"https://www.khanacademy.org/math/calculus-1",tag:"Video"},
+    {icon:"🔧",name:"Wolfram Alpha — Step-by-Step Solver",url:"https://www.wolframalpha.com/",tag:"Tool"},
+    {icon:"📘",name:"Internet Archive — B.S. Grewal Higher Engineering Maths",url:"https://archive.org/search?query=higher+engineering+mathematics+grewal",tag:"Textbook"},
+  ],
+  MA102:[
+    {icon:"📹",name:"NPTEL — Mathematics II (IIT Kharagpur)",url:"https://nptel.ac.in/courses/111105121",tag:"Video"},
+    {icon:"📹",name:"Khan Academy — Differential Equations",url:"https://www.khanacademy.org/math/differential-equations",tag:"Video"},
+    {icon:"🔧",name:"Wolfram Alpha — ODE Solver",url:"https://www.wolframalpha.com/",tag:"Tool"},
+  ],
+  CS101:[
+    {icon:"📹",name:"Jenny's Lectures — C Programming (YouTube)",url:"https://www.youtube.com/@JennyslecturesCSTutoials",tag:"Video"},
+    {icon:"💻",name:"HackerRank — C Language Practice",url:"https://www.hackerrank.com/domains/c",tag:"Practice"},
+    {icon:"🔧",name:"OnlineGDB — Free Online C Compiler",url:"https://www.onlinegdb.com/",tag:"Tool"},
+    {icon:"📘",name:"Archive.org — Let Us C (Yashavant Kanetkar)",url:"https://archive.org/search?query=let+us+c+yashavant+kanetkar",tag:"Textbook"},
+  ],
+  CS102:[
+    {icon:"📹",name:"Abdul Bari — Data Structures Full Playlist (YouTube)",url:"https://www.youtube.com/@abdul_bari",tag:"Video"},
+    {icon:"💻",name:"LeetCode — DSA Practice Problems",url:"https://leetcode.com/explore/",tag:"Practice"},
+    {icon:"📹",name:"Gate Smashers — DS Complete Series",url:"https://www.youtube.com/@GateSmashers",tag:"Video"},
+    {icon:"📘",name:"GeeksforGeeks — Data Structures",url:"https://www.geeksforgeeks.org/data-structures/",tag:"Reference"},
+  ],
+  CS103:[
+    {icon:"📹",name:"Gate Smashers — Digital Logic Design",url:"https://www.youtube.com/@GateSmashers",tag:"Video"},
+    {icon:"🔧",name:"logic.ly — Interactive Logic Gate Simulator",url:"https://logic.ly/demo/",tag:"Tool"},
+    {icon:"📘",name:"Archive.org — Morris Mano Digital Design",url:"https://archive.org/search?query=digital+design+morris+mano",tag:"Textbook"},
+  ],
+  CS104:[
+    {icon:"📹",name:"Gate Smashers — Discrete Maths Complete",url:"https://www.youtube.com/@GateSmashers",tag:"Video"},
+    {icon:"💻",name:"Brilliant.org — Logic & Discrete Maths",url:"https://brilliant.org/courses/logic/",tag:"Practice"},
+  ],
+  CS105:[
+    {icon:"📹",name:"Gate Smashers — Computer Organization",url:"https://www.youtube.com/@GateSmashers",tag:"Video"},
+    {icon:"📹",name:"NPTEL — Computer Architecture (IIT Delhi)",url:"https://nptel.ac.in/courses/106102062",tag:"Video"},
+  ],
+  EC101:[
+    {icon:"📹",name:"NPTEL — Basic Electronics (IIT Kharagpur)",url:"https://nptel.ac.in/courses/117105080",tag:"Video"},
+    {icon:"🔧",name:"CircuitLab — Online Circuit Simulator",url:"https://www.circuitlab.com/",tag:"Tool"},
+    {icon:"📘",name:"Archive.org — Boylestad Electronic Devices",url:"https://archive.org/search?query=boylestad+electronic+devices",tag:"Textbook"},
+  ],
+  ME101:[
+    {icon:"📹",name:"NPTEL — Engineering Mechanics (IIT Madras)",url:"https://nptel.ac.in/courses/112106140",tag:"Video"},
+    {icon:"📹",name:"Khan Academy — Physics — Forces & Motion",url:"https://www.khanacademy.org/science/physics",tag:"Video"},
+    {icon:"📘",name:"Archive.org — RC Hibbeler Engineering Mechanics",url:"https://archive.org/search?query=hibbeler+engineering+mechanics",tag:"Textbook"},
+  ],
+  default:[
+    {icon:"📹",name:"NPTEL — Search Your Subject (IIT/IISc)",url:"https://nptel.ac.in/courses",tag:"Video"},
+    {icon:"📹",name:"MIT OpenCourseWare",url:"https://ocw.mit.edu/",tag:"Video"},
+    {icon:"💻",name:"GeeksforGeeks",url:"https://www.geeksforgeeks.org/",tag:"Reference"},
+    {icon:"📘",name:"Internet Archive — Free Textbooks",url:"https://archive.org/",tag:"Textbook"},
+  ]
+};
+
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+let user={name:'',email:'',branch:'CSE',sem:1,roll:'',college:'',isNew:true};
+let progress={};
+let totalXP=0;
+let currentSem=1;
+let qIdx=0;
+const likedSet=new Set();
+
+// ══════════════════════════════════════════
+//  AUTH
+// ══════════════════════════════════════════
+function switchAuth(tab){
+  document.getElementById('signupForm').classList.toggle('active', tab==='signup');
+  document.getElementById('loginForm').classList.toggle('active', tab==='login');
+  document.getElementById('tabLogin').classList.toggle('active', tab==='login');
+  document.getElementById('tabSignup').classList.toggle('active', tab==='signup');
+}
+
+function handleGoogleLogin(){
+  // Get accounts saved when users signed up
+  const stored = JSON.parse(localStorage.getItem('fr_accounts') || '[]');
+  const list = document.getElementById('gAccountsList');
+  list.innerHTML = '';
+
+  if(stored.length === 0){
+    list.innerHTML = `
+      <div style="padding:28px 24px;text-align:center;">
+        <div style="font-size:36px;margin-bottom:10px;">🔍</div>
+        <div style="font-size:14px;font-weight:600;color:#202124;margin-bottom:6px;">No accounts found</div>
+        <div style="font-size:12.5px;color:#5f6368;line-height:1.6;">You haven't signed up yet.<br>Create an account first, then sign in with Google.</div>
+      </div>`;
+  } else {
+    const colors = ['#4285F4','#EA4335','#34A853','#FBBC05','#8b5cf6','#f97316'];
+    stored.forEach((acc, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'g-account';
+      const color = colors[i % colors.length];
+      const initial = acc.name ? acc.name[0].toUpperCase() : acc.email[0].toUpperCase();
+      btn.innerHTML = `
+        <div class="g-av" style="background:${color}">${initial}</div>
+        <div class="g-account-info">
+          <div class="g-account-name">${acc.name}</div>
+          <div class="g-account-email">${acc.email}</div>
+        </div>
+        <div class="g-account-check">✓</div>`;
+      btn.onclick = () => selectGoogleAccount(acc);
+      list.appendChild(btn);
+    });
+  }
+
+  document.getElementById('gPickerBackdrop').classList.add('open');
+}
+
+function selectGoogleAccount(acc){
+  closeGPicker();
+  user = {name:acc.name, email:acc.email, branch:acc.branch||'CSE', sem:acc.sem||1, roll:acc.roll||'', college:acc.college||'', isNew:false};
+  initProgress();
+  launchApp();
+  setTimeout(()=>showToast(`👋 Welcome back, ${acc.name.split(' ')[0]}!`,'success'),350);
+}
+
+function useAnotherAccount(){
+  closeGPicker();
+  const li = document.getElementById('li-email');
+  if(li){li.focus();li.scrollIntoView({behavior:'smooth',block:'center'});}
+  showToast('Enter your email below to sign in','');
+}
+
+function closeGPicker(e){
+  if(e && e.target !== document.getElementById('gPickerBackdrop')) return;
+  document.getElementById('gPickerBackdrop').classList.remove('open');
+}
+
+function handleSignup(){
+  const name=document.getElementById('su-name').value.trim();
+  const email=document.getElementById('su-email').value.trim();
+  const roll=document.getElementById('su-roll').value.trim();
+  const college=document.getElementById('su-college').value.trim();
+  const branch=document.getElementById('su-branch').value;
+  const sem=document.getElementById('su-sem').value;
+  if(!name){showToast('⚠️ Please enter your name','err');return;}
+  if(!email||!email.includes('@')){showToast('⚠️ Enter a valid email address','err');return;}
+  if(!branch){showToast('⚠️ Please select your branch','err');return;}
+  if(!sem){showToast('⚠️ Please select your semester','err');return;}
+  user={name,email,branch,sem:parseInt(sem),roll,college,isNew:true};
+  // Save to localStorage so Google picker can show this account later
+  const accounts = JSON.parse(localStorage.getItem('fr_accounts') || '[]');
+  if(!accounts.find(a => a.email === email)){
+    accounts.push({name,email,branch,sem:parseInt(sem),roll,college});
+    localStorage.setItem('fr_accounts', JSON.stringify(accounts));
+  }
+  initProgress();
+  launchApp();
+}
+
+function handleLogin(){
+  const email=document.getElementById('li-email').value.trim();
+  if(!email||!email.includes('@')){showToast('⚠️ Enter a valid email address','err');return;}
+  const accounts=JSON.parse(localStorage.getItem('fr_accounts')||'[]');
+  const found=accounts.find(a=>a.email.toLowerCase()===email.toLowerCase());
+  if(!found){
+    // Show inline error
+    const inp=document.getElementById('li-email');
+    inp.style.borderColor='var(--danger)';
+    inp.style.boxShadow='0 0 0 3px rgba(239,68,68,0.15)';
+    let errEl=document.getElementById('li-email-err');
+    if(!errEl){
+      errEl=document.createElement('div');
+      errEl.id='li-email-err';
+      errEl.style.cssText='color:var(--danger);font-size:12.5px;font-weight:600;margin-top:7px;display:flex;align-items:center;gap:6px;';
+      inp.closest('.fg').appendChild(errEl);
+    }
+    errEl.innerHTML='❌ No account found with this email. <a href="#" onclick="switchAuth(\'signup\')" style="color:var(--accent);text-decoration:none;font-weight:700;">Create one →</a>';
+    inp.oninput=()=>{
+      inp.style.borderColor='';inp.style.boxShadow='';
+      const e=document.getElementById('li-email-err');if(e)e.remove();
+    };
+    return;
+  }
+  user={name:found.name,email:found.email,branch:found.branch||'CSE',sem:found.sem||1,roll:found.roll||'',college:found.college||'',isNew:false};
+  initProgress();
+  launchApp();
+}
+
+function initProgress(){
+  progress={};
+  const bd=BRANCH_DATA[user.branch]||BRANCH_DATA.CSE;
+  ['sem1','sem2'].forEach(s=>{
+    bd[s].forEach(sub=>{
+      progress[sub.code]={};
+      sub.topics.forEach(t=>progress[sub.code][t]=false);
+    });
+  });
+}
+
+function launchApp(){
+  document.getElementById('signupPage').classList.remove('active');
+  document.getElementById('mainApp').classList.add('active');
+  currentSem=user.sem;
+  buildApp();
+  setTimeout(()=>{
+    const greeting=user.isNew?`Hey ${user.name.split(' ')[0]}! Your roadmap is all set 🎓`:`Welcome back, ${user.name.split(' ')[0]}! 👋`;
+    showToast(greeting,'success');
+  },400);
+}
+
+function buildApp(){
+  // Greeting — no 'Welcome back' for new users
+  const firstName=user.name.split(' ')[0];
+  const greetEl=document.getElementById('heroGreet');
+  if(user.isNew){greetEl.innerHTML=`Hey <span class="hi-name" id="heroName">${firstName}</span>, ready to start? 🎓`;}
+  else{greetEl.innerHTML=`Good to see you, <span class="hi-name" id="heroName">${firstName}</span>! 👋`;}
+  document.getElementById('heroBranch').textContent=`⚡ ${user.branch} BRANCH`;
+  document.getElementById('navAv').textContent=firstName[0].toUpperCase();
+  document.getElementById('navName').textContent=firstName;
+  document.getElementById('ddAv').textContent=firstName[0].toUpperCase();
+  document.getElementById('ddName').textContent=user.name;
+  document.getElementById('ddInfo').textContent=user.branch+' • Sem '+user.sem;
+  buildRoadmap();
+  buildResources();
+  buildCareer();
+  buildExtras();
+  updateStats();
+  newQuote();
+}
+
+// ══════════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════════
+function showSection(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const n=document.getElementById('nav-'+id);
+  if(n)n.classList.add('active');
+  closeDd();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ══════════════════════════════════════════
+//  ROADMAP
+// ══════════════════════════════════════════
+function buildRoadmap(){
+  const tabs=document.getElementById('semTabs');
+  tabs.innerHTML='';
+  [1,2].forEach(n=>{
+    const btn=document.createElement('button');
+    btn.className=`sem-tab${n===currentSem?' active':''}${n>user.sem?' locked':''}`;
+    btn.textContent=`Semester ${n}${n>user.sem?' 🔒':''}`;
+    btn.onclick=()=>{
+      if(n>user.sem&&getSem1Pct()<80){showToast('🔒 Complete 80% of Sem 1 to unlock Sem 2','');return;}
+      currentSem=n;
+      document.querySelectorAll('.sem-tab').forEach(t=>t.classList.remove('active'));
+      btn.classList.add('active');
+      buildSubjects();
+    };
+    tabs.appendChild(btn);
+  });
+  buildSubjects();
+}
+
+function getSem1Pct(){
+  const bd=BRANCH_DATA[user.branch]||BRANCH_DATA.CSE;
+  let tot=0,done=0;
+  bd.sem1.forEach(s=>Object.values(progress[s.code]||{}).forEach(v=>{tot++;if(v)done++;}));
+  return tot?Math.round(done/tot*100):0;
+}
+
+function buildSubjects(){
+  const bd=BRANCH_DATA[user.branch]||BRANCH_DATA.CSE;
+  const key=currentSem===1?'sem1':'sem2';
+  const locked=currentSem>user.sem&&getSem1Pct()<80;
+  const g=document.getElementById('subjectsGrid');
+  g.innerHTML='';
+  bd[key].forEach(sub=>{
+    const pct=subPct(sub.code,sub.topics);
+    const circ=2*Math.PI*18;
+    const card=document.createElement('div');
+    card.className=`subj-card${locked?' locked-card':''}`;
+    card.innerHTML=`
+      <div class="subj-top">
+        <div class="subj-icon" style="background:${sub.color}22">${sub.icon}</div>
+        <div class="ring-wrap">
+          <svg width="44" height="44" viewBox="0 0 44 44">
+            <circle class="ring-bg" cx="22" cy="22" r="18"/>
+            <circle class="ring-fg" cx="22" cy="22" r="18" stroke="${sub.color}"
+              stroke-dasharray="${circ}" stroke-dashoffset="${circ-(pct/100)*circ}" id="rg-${sub.code}"/>
+          </svg>
+          <div class="ring-pct" style="color:${sub.color}" id="rp-${sub.code}">${pct}%</div>
+        </div>
+      </div>
+      <div class="subj-name">${sub.name}</div>
+      <div class="subj-code">${sub.code}</div>
+      <div class="skill-tags">${sub.skills.map(s=>`<span class="skill-tag">${s}</span>`).join('')}</div>
+      <ul class="checklist" id="cl-${sub.code}"></ul>
+      <button class="res-btn" onclick="openResModal('${sub.code}','${sub.name}')">📚 Study Resources →</button>
+    `;
+    g.appendChild(card);
+    const ul=document.getElementById(`cl-${sub.code}`);
+    sub.topics.forEach(t=>{
+      const li=document.createElement('li');
+      const done=progress[sub.code]?.[t];
+      li.className=done?'done':'';
+      li.innerHTML=`<div class="chk">${done?'✓':''}</div>${t}`;
+      li.onclick=()=>toggleTopic(sub.code,t,li,sub);
+      ul.appendChild(li);
+    });
+  });
+}
+
+function subPct(code,topics){
+  if(!progress[code])return 0;
+  return Math.round(topics.filter(t=>progress[code][t]).length/topics.length*100);
+}
+
+function toggleTopic(code,topic,li,sub){
+  progress[code][topic]=!progress[code][topic];
+  const done=progress[code][topic];
+  li.className=done?'done':'';
+  li.querySelector('.chk').textContent=done?'✓':'';
+  if(done){totalXP+=20;if(document.getElementById('togXP').checked)showToast('⭐ +20 XP!','xp');}
+  else totalXP=Math.max(0,totalXP-20);
+  const p=subPct(code,sub.topics);
+  const circ=2*Math.PI*18;
+  const rg=document.getElementById(`rg-${code}`);
+  const rp=document.getElementById(`rp-${code}`);
+  if(rg)rg.style.strokeDashoffset=circ-(p/100)*circ;
+  if(rp)rp.textContent=p+'%';
+  updateStats();
+}
+
+// ══════════════════════════════════════════
+//  STATS & BADGES
+// ══════════════════════════════════════════
+function updateStats(){
+  const allSubs=getAllSubs();
+  let tot=0,done=0;
+  allSubs.forEach(s=>s.topics.forEach(t=>{tot++;if(progress[s.code]?.[t])done++;}));
+  const pct=tot?Math.round(done/tot*100):0;
+  const earned=BADGES.filter(b=>b.check(done,getSem1Pct())).length;
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('progPct').textContent=pct+'%';
+  document.getElementById('sSubs').textContent=allSubs.length;
+  document.getElementById('sDone').textContent=done;
+  document.getElementById('sXP').textContent=totalXP;
+  document.getElementById('sBadges').textContent=earned;
+  // XP levels
+  const thr=[0,500,1200,2200,3500,5000];
+  const names=['Fresher','Explorer','Learner','Scholar','Expert','Master'];
+  let lvl=1,xpIn=totalXP,xpFor=500;
+  for(let i=1;i<thr.length;i++){if(totalXP>=thr[i]){lvl=i+1;xpIn=totalXP-thr[i];xpFor=thr[Math.min(i+1,thr.length-1)]-thr[i];}else{xpIn=totalXP-thr[i-1];xpFor=thr[i]-thr[i-1];break;}}
+  const xpPct=Math.min(100,Math.round(xpIn/xpFor*100));
+  const xpFill=document.getElementById('xpFill');
+  if(xpFill){
+    xpFill.style.width=xpPct+'%';
+    document.getElementById('xpLvl').textContent=`Level ${lvl} — ${names[Math.min(lvl-1,5)]}`;
+    document.getElementById('xpCur').textContent=totalXP+' XP';
+    document.getElementById('xpNxt').textContent=Math.max(0,xpFor-xpIn)+' XP to next level';
+  }
+  buildBadges();
+  buildSubProgList();
+}
+
+function getAllSubs(){
+  const bd=BRANCH_DATA[user.branch]||BRANCH_DATA.CSE;
+  return [...bd.sem1,...bd.sem2];
+}
+
+function buildBadges(){
+  const g=document.getElementById('badgesGrid');
+  if(!g)return;
+  g.innerHTML='';
+  const done=getAllSubs().reduce((a,s)=>a+s.topics.filter(t=>progress[s.code]?.[t]).length,0);
+  const s1p=getSem1Pct();
+  BADGES.forEach(b=>{
+    const earned=b.check(done,s1p);
+    const c=document.createElement('div');
+    c.className=`badge-card${!earned?' locked':''}`;
+    c.innerHTML=`<span class="badge-icon">${b.icon}</span><div class="badge-name">${b.name}</div><div class="badge-desc">${b.desc}</div>${earned?`<div class="badge-earned">UNLOCKED ✓</div>`:''}`;
+    g.appendChild(c);
+  });
+}
+
+function buildSubProgList(){
+  const l=document.getElementById('subProgList');
+  if(!l)return;
+  l.innerHTML='';
+  getAllSubs().forEach(sub=>{
+    const p=subPct(sub.code,sub.topics);
+    const d=document.createElement('div');
+    d.style.cssText='background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:17px;margin-bottom:10px;';
+    d.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;"><div><span style="font-weight:700;font-family:Space Grotesk,sans-serif;font-size:14px;">${sub.icon} ${sub.name}</span><span style="color:var(--text2);font-size:10.5px;margin-left:7px;letter-spacing:1px;">${sub.code}</span></div><span style="font-weight:700;font-family:Space Grotesk,sans-serif;color:${p===100?'var(--success)':'var(--accent)'}">${p}%</span></div><div style="height:7px;background:var(--bg3);border-radius:999px;overflow:hidden;"><div style="height:100%;width:${p}%;background:linear-gradient(90deg,${sub.color},${sub.color}99);border-radius:999px;transition:width 1s ease;"></div></div>`;
+    l.appendChild(d);
+  });
+}
+
+// ══════════════════════════════════════════
+// ══════════════════════════════════════════
+//  RESOURCES — branch-specific
+// ══════════════════════════════════════════
+const RESOURCES_DATA = {
+  CSE:[
+    {type:"📹 Video Lectures",name:"NPTEL — IIT Courses (Free)",desc:"Official free video lectures from IIT/IISc professors covering CS, Maths, Physics. Certificate courses available.",subject:"All Subjects",link:"https://nptel.ac.in/courses"},
+    {type:"💻 Coding Practice",name:"GeeksforGeeks",desc:"Largest CS portal — DSA, algorithms, system design, company interview questions and theory for all CS subjects.",subject:"Programming / CS",link:"https://www.geeksforgeeks.org/"},
+    {type:"💻 Coding Practice",name:"LeetCode",desc:"Industry-standard platform for coding interviews. 2500+ problems with company-wise tagging. Start early, win big.",subject:"Algorithms & DSA",link:"https://leetcode.com/"},
+    {type:"📹 Video Lectures",name:"Abdul Bari — DSA (YouTube)",desc:"The best Data Structures & Algorithms playlist on YouTube. Clear, detailed, with full examples.",subject:"Data Structures",link:"https://www.youtube.com/@abdul_bari"},
+    {type:"📹 Video Lectures",name:"Jenny's Lectures CS (YouTube)",desc:"Beginner-friendly C programming and DSA lectures. Step-by-step and perfect for first-year students.",subject:"Programming / DSA",link:"https://www.youtube.com/@JennyslecturesCSTutoials"},
+    {type:"📹 Video Lectures",name:"Gate Smashers (YouTube)",desc:"In-depth CS core subjects — TOC, OS, CN, DBMS, Digital Logic. Essential for exams.",subject:"CS Core Subjects",link:"https://www.youtube.com/@GateSmashers"},
+    {type:"🔧 Tools",name:"OnlineGDB — C/C++ Compiler",desc:"Free browser-based C/C++ IDE. Write, compile, debug online without installing anything.",subject:"Programming Lab",link:"https://www.onlinegdb.com/"},
+    {type:"🔧 Tools",name:"Wolfram Alpha",desc:"World's most powerful computational engine. Solve any maths problem with step-by-step solutions.",subject:"Mathematics",link:"https://www.wolframalpha.com/"},
+    {type:"📘 Textbooks",name:"Archive.org — Free Books",desc:"Free digital library with engineering textbooks — Kreyszig, Morris Mano, Tanenbaum and more.",subject:"All Textbooks",link:"https://archive.org/"},
+    {type:"💻 Coding Practice",name:"HackerRank",desc:"Practice C, Python, Java with structured challenges. Great for beginners — start with 30 Days of Code.",subject:"Programming",link:"https://www.hackerrank.com/"},
+  ],
+  ECE:[
+    {type:"📹 Video Lectures",name:"NPTEL — Electronics Engineering (IIT Kharagpur)",desc:"Free IIT video lectures on Basic Electronics, Signals & Systems, EM Theory, Analog/Digital Electronics.",subject:"Core ECE Subjects",link:"https://nptel.ac.in/courses"},
+    {type:"🔧 Tools",name:"CircuitLab — Online Circuit Simulator",desc:"Browser-based circuit simulator. Draw, analyze and simulate analog/digital circuits instantly.",subject:"Circuit Analysis",link:"https://www.circuitlab.com/"},
+    {type:"🔧 Tools",name:"Falstad Circuit Simulator",desc:"Free interactive circuit simulator — great for understanding BJT, op-amps and filter behavior.",subject:"Electronics Lab",link:"https://www.falstad.com/circuit/"},
+    {type:"📹 Video Lectures",name:"MATLAB Onramp (Free — MathWorks)",desc:"Official free MATLAB course from MathWorks. Essential for signal processing, control systems and simulation.",subject:"MATLAB / Simulation",link:"https://matlabacademy.mathworks.com/"},
+    {type:"📹 Video Lectures",name:"Neso Academy — Electronics (YouTube)",desc:"Clear video lectures on Basic Electronics, Digital Electronics, Communications and Signals & Systems.",subject:"ECE Core",link:"https://www.youtube.com/@nesoacademy"},
+    {type:"💻 Coding Practice",name:"EDA Playground — VHDL/Verilog",desc:"Free online platform to write, simulate and test VHDL and Verilog HDL code without installing tools.",subject:"Digital Design / VLSI",link:"https://www.edaplayground.com/"},
+    {type:"🔧 Tools",name:"LTspice — Free SPICE Simulator",desc:"Industry-standard free circuit simulator from Analog Devices. Perfect for analog circuit design.",subject:"Analog Electronics",link:"https://www.analog.com/en/resources/design-tools-and-calculators/ltspice-simulator.html"},
+    {type:"📘 Textbooks",name:"Archive.org — Boylestad, Hayt & Kemmerly",desc:"Free digital copies of Boylestad's Electronic Devices, Hayt's Engineering Circuit Analysis and more.",subject:"Textbooks",link:"https://archive.org/search?query=electronic+devices+boylestad"},
+    {type:"📹 Video Lectures",name:"MIT OCW — Signals & Systems",desc:"MIT's free course on signals, systems and transforms — excellent for ECE second semester.",subject:"Signals & Systems",link:"https://ocw.mit.edu/courses/6-003-signals-and-systems-fall-2011/"},
+    {type:"🔧 Tools",name:"Logisim — Digital Circuit Simulator",desc:"Free tool to design and simulate combinational and sequential digital circuits. Great for DLD lab.",subject:"Digital Logic",link:"http://www.cburch.com/logisim/"},
+  ],
+  EEE:[
+    {type:"📹 Video Lectures",name:"NPTEL — Electrical Engineering Courses (IIT)",desc:"Free IIT video lectures on Power Systems, Electrical Machines, Power Electronics, Control Systems.",subject:"Core EEE Subjects",link:"https://nptel.ac.in/courses"},
+    {type:"🔧 Tools",name:"ETAP — Power System Simulation",desc:"Industry-standard software for electrical power system analysis, load flow, fault analysis and protection.",subject:"Power Systems",link:"https://etap.com/"},
+    {type:"🔧 Tools",name:"MATLAB/Simulink Onramp (Free)",desc:"Official free MATLAB & Simulink course. Essential for control systems, power electronics simulation.",subject:"Simulation",link:"https://matlabacademy.mathworks.com/"},
+    {type:"📹 Video Lectures",name:"Neso Academy — Electrical (YouTube)",desc:"Clear video lectures on Basic Electrical Engineering, Circuit Analysis and Electrical Machines.",subject:"EEE Core",link:"https://www.youtube.com/@nesoacademy"},
+    {type:"🔧 Tools",name:"LTspice — Free SPICE Simulator",desc:"Free circuit simulator. Perfect for power electronics, converter design and electrical circuit analysis.",subject:"Power Electronics",link:"https://www.analog.com/en/resources/design-tools-and-calculators/ltspice-simulator.html"},
+    {type:"🔧 Tools",name:"AutoCAD Electrical (Student Free)",desc:"Design electrical control schematics, panel layouts and wiring diagrams — free for students.",subject:"Electrical Design",link:"https://www.autodesk.com/education/edu-software/overview"},
+    {type:"📘 Textbooks",name:"Archive.org — Chapman, Kothari & Nagrath",desc:"Free digital copies of Chapman's Electric Machinery, Kothari & Nagrath Electrical Machines and more.",subject:"Textbooks",link:"https://archive.org/search?query=electrical+machines+kothari"},
+    {type:"📹 Video Lectures",name:"MIT OCW — Circuits & Electronics",desc:"MIT's free 6.002 Circuits & Electronics — excellent foundational course for EEE students.",subject:"Circuits",link:"https://ocw.mit.edu/courses/6-002-circuits-and-electronics-spring-2007/"},
+    {type:"💻 Practice",name:"Brilliant.org — Electrical Engineering",desc:"Interactive problem-solving for circuits, physics and engineering fundamentals.",subject:"Problem Solving",link:"https://brilliant.org/courses/circuit-theory/"},
+    {type:"🔧 Tools",name:"Wolfram Alpha",desc:"Step-by-step solutions for circuit equations, Laplace transforms, power calculations and more.",subject:"Mathematics",link:"https://www.wolframalpha.com/"},
+  ],
+  CIVIL:[
+    {type:"📹 Video Lectures",name:"NPTEL — Civil Engineering (IIT Madras & Roorkee)",desc:"Free IIT video lectures on Structural Analysis, Fluid Mechanics, Soil Mechanics, Surveying and more.",subject:"Core Civil Subjects",link:"https://nptel.ac.in/courses"},
+    {type:"🔧 Tools",name:"STAAD Pro (Student Version)",desc:"Industry-leading structural analysis and design software. Student license available free from Bentley.",subject:"Structural Analysis",link:"https://www.bentley.com/software/staad-pro/"},
+    {type:"🔧 Tools",name:"AutoCAD Civil 3D (Free for Students)",desc:"Design roads, drainage, land and site layouts. Autodesk provides free student licenses.",subject:"Civil Design / Drawing",link:"https://www.autodesk.com/education/edu-software/overview"},
+    {type:"🔧 Tools",name:"GIS & ArcGIS Online (Free)",desc:"Free web-based GIS platform for mapping, spatial analysis and land use planning projects.",subject:"Surveying / GIS",link:"https://www.arcgis.com/index.html"},
+    {type:"📹 Video Lectures",name:"Civil Engineering Academy (YouTube)",desc:"Easy-to-understand videos on structural analysis, RCC design, soil mechanics and surveying.",subject:"Civil Core",link:"https://www.youtube.com/@CivilEngineeringAcademy"},
+    {type:"📘 Textbooks",name:"Archive.org — Hibbeler, IS Codes, Terzaghi",desc:"Free digital access to RC Hibbeler Structural Analysis, IS code references and Terzaghi Soil Mechanics.",subject:"Textbooks",link:"https://archive.org/search?query=structural+analysis+hibbeler"},
+    {type:"🔧 Tools",name:"ETABS (Student Version)",desc:"Structural analysis software for buildings — widely used in industry for RCC and steel design.",subject:"Structural Design",link:"https://www.csiamerica.com/products/etabs"},
+    {type:"📹 Video Lectures",name:"MIT OCW — Structural Engineering",desc:"MIT's free course materials for mechanics of materials and structural analysis.",subject:"Structural Analysis",link:"https://ocw.mit.edu/courses/1-050-solid-mechanics-fall-2004/"},
+    {type:"🔧 Tools",name:"HEC-RAS (Free)",desc:"Free USACE software for hydraulic analysis of rivers, channels and flood modeling.",subject:"Fluid Mechanics / Hydrology",link:"https://www.hec.usace.army.mil/software/hec-ras/"},
+    {type:"🔧 Tools",name:"Wolfram Alpha",desc:"Step-by-step solutions for structural calculations, fluid mechanics equations and maths problems.",subject:"Mathematics",link:"https://www.wolframalpha.com/"},
+  ],
+  IT:[
+    {type:"📹 Video Lectures",name:"NPTEL — IT & CS Courses (IIT)",desc:"Free IIT video lectures on Networking, DBMS, OS, Web Technologies and Python Programming.",subject:"All IT Subjects",link:"https://nptel.ac.in/courses"},
+    {type:"💻 Coding Practice",name:"LeetCode",desc:"Industry-standard for coding interviews. 2500+ problems with company-wise tagging.",subject:"Algorithms & DSA",link:"https://leetcode.com/"},
+    {type:"💻 Practice",name:"freeCodeCamp",desc:"Free full-stack web development curriculum — HTML, CSS, JS, React, Node, Python and more.",subject:"Web Development",link:"https://www.freecodecamp.org/"},
+    {type:"🔧 Tools",name:"VS Code (Free IDE)",desc:"The world's most popular free code editor. Supports Python, JS, HTML/CSS, Java and 100+ languages.",subject:"Programming",link:"https://code.visualstudio.com/"},
+    {type:"📹 Video Lectures",name:"Traversy Media (YouTube)",desc:"Project-based web development tutorials — HTML, CSS, JS, React, Node.js and full stack.",subject:"Web Development",link:"https://www.youtube.com/@TraversyMedia"},
+    {type:"💻 Practice",name:"HackerRank",desc:"Structured coding challenges for Python, Java, SQL and web development. Great for interviews.",subject:"Programming",link:"https://www.hackerrank.com/"},
+    {type:"🔧 Tools",name:"Postman",desc:"Free API testing tool. Essential for testing REST APIs — every IT/web developer needs this.",subject:"Web Development / APIs",link:"https://www.postman.com/"},
+    {type:"💻 Practice",name:"W3Schools",desc:"Quick reference and interactive practice for HTML, CSS, JavaScript, SQL, Python and more.",subject:"Web Fundamentals",link:"https://www.w3schools.com/"},
+    {type:"🔧 Tools",name:"GitHub (Free)",desc:"Version control platform — every developer must learn Git and GitHub from day one.",subject:"Version Control",link:"https://github.com/"},
+    {type:"📘 Textbooks",name:"Archive.org — Tanenbaum, Silberschatz",desc:"Free digital copies of Tanenbaum Computer Networks, Silberschatz OS Concepts and DBMS books.",subject:"Textbooks",link:"https://archive.org/"},
+  ],
+  AIDS:[
+    {type:"📹 Video Lectures",name:"NPTEL — AI & Data Science (IIT Madras)",desc:"Free IIT video lectures on Machine Learning, Deep Learning, Data Science and Statistics.",subject:"AI/DS Core",link:"https://nptel.ac.in/courses"},
+    {type:"💻 Practice",name:"Kaggle",desc:"World's largest data science community. Free datasets, notebooks, competitions and courses.",subject:"Data Science / ML",link:"https://www.kaggle.com/"},
+    {type:"📹 Video Lectures",name:"3Blue1Brown — Neural Networks (YouTube)",desc:"Beautiful visual explanations of neural networks, calculus and linear algebra. Must-watch for AI students.",subject:"Deep Learning / Maths",link:"https://www.youtube.com/@3blue1brown"},
+    {type:"🔧 Tools",name:"Google Colab (Free)",desc:"Free cloud Jupyter notebook with GPU support. Run Python, ML and deep learning code in browser.",subject:"Python / ML",link:"https://colab.research.google.com/"},
+    {type:"📹 Video Lectures",name:"StatQuest with Josh Starmer (YouTube)",desc:"The clearest explanations of statistics and machine learning algorithms on YouTube.",subject:"Statistics / ML",link:"https://www.youtube.com/@statquest"},
+    {type:"💻 Practice",name:"LeetCode — SQL & Python",desc:"Practice SQL queries and Python algorithms needed for data science and AI roles.",subject:"SQL / Python",link:"https://leetcode.com/"},
+    {type:"🔧 Tools",name:"Tableau Public (Free)",desc:"Free data visualization tool. Create stunning interactive dashboards and charts.",subject:"Data Visualization",link:"https://public.tableau.com/"},
+    {type:"📹 Video Lectures",name:"Andrew Ng — ML Specialization (Coursera)",desc:"The most famous ML course on earth by Andrew Ng. Audit for free. Foundation for every AI engineer.",subject:"Machine Learning",link:"https://www.coursera.org/specializations/machine-learning-introduction"},
+    {type:"🔧 Tools",name:"Hugging Face",desc:"Free access to thousands of pre-trained AI models for NLP, computer vision and more.",subject:"AI Models",link:"https://huggingface.co/"},
+    {type:"📘 Textbooks",name:"Archive.org — Python ML Books",desc:"Free copies of Hands-On ML with Scikit-Learn, Python for Data Analysis and Deep Learning.",subject:"Textbooks",link:"https://archive.org/search?query=machine+learning+python"},
+  ],
+  MECH:[
+    {type:"📹 Video Lectures",name:"NPTEL — Mechanical Engineering (IIT Madras)",desc:"Free IIT video lectures on Thermodynamics, Fluid Mechanics, Manufacturing, Engineering Mechanics.",subject:"Core MECH Subjects",link:"https://nptel.ac.in/courses"},
+    {type:"🔧 Tools",name:"ANSYS Student (Free)",desc:"Free student version of ANSYS — industry standard for FEA/FEM structural, thermal and CFD analysis.",subject:"FEA / Simulation",link:"https://www.ansys.com/academic/students"},
+    {type:"🔧 Tools",name:"SolidWorks (Student License)",desc:"3D CAD software widely used in mechanical industry. Free for students through CSWA program.",subject:"CAD / Design",link:"https://www.solidworks.com/solution/industries/academia"},
+    {type:"🔧 Tools",name:"AutoCAD (Free for Students)",desc:"2D/3D drafting and design. Free Autodesk student license available.",subject:"Engineering Drawing",link:"https://www.autodesk.com/education/edu-software/overview"},
+    {type:"📹 Video Lectures",name:"The Efficient Engineer (YouTube)",desc:"Crystal-clear explanations of mechanics, materials, thermodynamics and engineering concepts.",subject:"Mechanical Engineering",link:"https://www.youtube.com/@TheEfficientEngineer"},
+    {type:"📹 Video Lectures",name:"Khan Academy — Physics & Thermodynamics",desc:"Free clear explanations of Newtonian mechanics, thermodynamics and physical principles.",subject:"Physics / Mechanics",link:"https://www.khanacademy.org/science/physics"},
+    {type:"🔧 Tools",name:"MATLAB Onramp (Free — MathWorks)",desc:"Free official MATLAB course. Essential for control systems, simulation and numerical methods.",subject:"MATLAB / Simulation",link:"https://matlabacademy.mathworks.com/"},
+    {type:"💻 Practice",name:"GrabCAD Library",desc:"Free 3D model library with thousands of mechanical parts and assemblies for study and practice.",subject:"CAD / Design",link:"https://grabcad.com/library"},
+    {type:"📘 Textbooks",name:"Archive.org — Hibbeler, Cengel & Boles, Shigley",desc:"Free copies of Hibbeler Mechanics, Cengel Thermodynamics, Shigley Machine Design and more.",subject:"Textbooks",link:"https://archive.org/search?query=engineering+mechanics+hibbeler"},
+    {type:"🔧 Tools",name:"Wolfram Alpha",desc:"Step-by-step solutions for thermodynamics, fluid mechanics and engineering calculations.",subject:"Mathematics",link:"https://www.wolframalpha.com/"},
+  ],
+  CHEM:[
+    {type:"📹 Video Lectures",name:"NPTEL — Chemical Engineering (IIT Bombay & Madras)",desc:"Free IIT video lectures on Chemical Process Principles, Fluid Flow, Heat Transfer, Thermodynamics.",subject:"Core ChE Subjects",link:"https://nptel.ac.in/courses"},
+    {type:"🔧 Tools",name:"Aspen HYSYS / Plus (Student License)",desc:"Industry-standard process simulation software. AspenTech provides free academic licenses.",subject:"Process Simulation",link:"https://www.aspentech.com/en/academic-program"},
+    {type:"🔧 Tools",name:"ChemDraw (Free Student Version)",desc:"Draw chemical structures, reactions and predict properties. Standard software for chemistry students.",subject:"Organic Chemistry",link:"https://www.perkinelmer.com/category/chemdraw"},
+    {type:"📹 Video Lectures",name:"MIT OCW — Chemical Engineering Thermodynamics",desc:"MIT's free course materials for thermodynamics, phase equilibria and reaction engineering.",subject:"Thermodynamics",link:"https://ocw.mit.edu/courses/10-40-chemical-engineering-thermodynamics-fall-2003/"},
+    {type:"📹 Video Lectures",name:"LearnChemE (YouTube — University of Colorado)",desc:"Clear lectures on mass/energy balances, thermodynamics, fluid flow, heat transfer and reaction engineering.",subject:"All ChE Subjects",link:"https://www.youtube.com/@LearnChemE"},
+    {type:"🔧 Tools",name:"Wolfram Alpha",desc:"Solve chemical equations, stoichiometry calculations, thermodynamic properties step by step.",subject:"Chemistry / Maths",link:"https://www.wolframalpha.com/"},
+    {type:"📘 Textbooks",name:"Archive.org — Felder & Rousseau, Geankoplis",desc:"Free copies of Felder Principles of Chemical Processes, Geankoplis Transport Processes and more.",subject:"Textbooks",link:"https://archive.org/search?query=chemical+engineering+felder+rousseau"},
+    {type:"🔧 Tools",name:"NIST WebBook — Thermophysical Data",desc:"Free thermodynamic and transport property data for thousands of chemical compounds.",subject:"Thermodynamics / Properties",link:"https://webbook.nist.gov/"},
+    {type:"💻 Practice",name:"Khan Academy — Chemistry",desc:"Solid foundation in general chemistry, organic chemistry and thermodynamics for ChE students.",subject:"Chemistry Fundamentals",link:"https://www.khanacademy.org/science/chemistry"},
+    {type:"📹 Video Lectures",name:"Crash Course Chemistry (YouTube)",desc:"Fun, fast-paced chemistry overviews covering organic, electrochemistry, thermodynamics and more.",subject:"Chemistry",link:"https://www.youtube.com/@crashcourse"},
+  ],
+};
+
+// ══════════════════════════════════════════
+//  RESOURCES
+// ══════════════════════════════════════════
+function buildResources(){
+  const g=document.getElementById('resGrid');
+  g.innerHTML='';
+  const branch=user.branch||'CSE';
+  const list=RESOURCES_DATA[branch]||RESOURCES_DATA.CSE;
+  list.forEach(r=>{
+    const c=document.createElement('div');
+    c.className='res-card';
+    c.innerHTML=`<div class="res-type-badge">${r.type}</div><h3>${r.name}</h3><p>${r.desc}</p><p class="res-subject">📌 ${r.subject}</p><a class="res-link" href="${r.link}" target="_blank" rel="noopener">Open Resource →</a>`;
+    g.appendChild(c);
+  });
+}
+
+// ══════════════════════════════════════════
+//  CAREER
+// ══════════════════════════════════════════
+function buildCareer(){
+  const careers=CAREER_DATA[user.branch]||CAREER_DATA.CSE;
+  const g=document.getElementById('careerGrid');
+  g.innerHTML='';
+  careers.forEach(c=>{
+    const d=document.createElement('div');
+    d.className='career-card';
+    d.innerHTML=`<div class="career-icon">${c.icon}</div><div class="career-title">${c.title}</div><div class="career-desc">${c.desc}</div><div class="cskill-tags">${c.skills.map(s=>`<span class="cskill-tag">${s}</span>`).join('')}</div>`;
+    g.appendChild(d);
+  });
+}
+
+// ══════════════════════════════════════════
+//  EXAM MANAGER
+// ══════════════════════════════════════════
+let userExams = [];
+let examIdCounter=1;
+
+function openExamMgr(){
+  renderExamMgrList();
+  // set default date to today
+  const today=new Date().toISOString().split('T')[0];
+  document.getElementById('newExamDate').min=today;
+  document.getElementById('newExamDate').value='';
+  document.getElementById('newExamName').value='';
+  document.getElementById('examMgrModal').classList.add('open');
+}
+function closeExamMgr(){document.getElementById('examMgrModal').classList.remove('open');}
+function handleExamMgrClick(e){if(e.target.id==='examMgrModal')closeExamMgr();}
+
+function renderExamMgrList(){
+  const ul=document.getElementById('examMgrList');
+  ul.innerHTML='';
+  if(userExams.length===0){
+    ul.innerHTML='<li style="text-align:center;color:var(--text2);font-size:13px;padding:16px;">No exams added yet. Add one below!</li>';
+    return;
+  }
+  const sorted=[...userExams].sort((a,b)=>new Date(a.date)-new Date(b.date));
+  sorted.forEach(e=>{
+    const days=Math.max(0,Math.ceil((new Date(e.date)-new Date())/86400000));
+    const li=document.createElement('li');
+    li.className='exam-li';
+    li.innerHTML=`
+      <div class="exam-li-icon">${e.icon}</div>
+      <div class="exam-li-info">
+        <div class="exam-li-name">${e.name}</div>
+        <div class="exam-li-date">📅 ${formatDate(e.date)}</div>
+      </div>
+      <div class="exam-li-days">${days}d</div>
+      <button class="exam-li-del" onclick="deleteExam(${e.id})" title="Remove">🗑️</button>
+    `;
+    ul.appendChild(li);
+  });
+}
+
+function addExam(){
+  const name=document.getElementById('newExamName').value.trim();
+  const date=document.getElementById('newExamDate').value;
+  const icon=document.getElementById('newExamType').value;
+  if(!name){showToast('⚠️ Enter an exam name','err');return;}
+  if(!date){showToast('⚠️ Select an exam date','err');return;}
+  userExams.push({id:examIdCounter++,icon,name,date});
+  renderExamMgrList();
+  buildCountdown();
+  document.getElementById('newExamName').value='';
+  document.getElementById('newExamDate').value='';
+  showToast('✅ Exam added to countdown!','success');
+}
+
+function deleteExam(id){
+  userExams=userExams.filter(e=>e.id!==id);
+  renderExamMgrList();
+  buildCountdown();
+  showToast('🗑️ Exam removed','');
+}
+
+function formatDate(dateStr){
+  const d=new Date(dateStr+'T00:00:00');
+  return d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+}
+
+function buildCountdown(){
+  const g=document.getElementById('cdGrid');
+  g.innerHTML='';
+  if(userExams.length===0){
+    g.style.display='block';
+    g.innerHTML=`
+      <div style="background:var(--card);border:1.5px dashed var(--border);border-radius:16px;padding:36px;text-align:center;">
+        <div style="font-size:44px;margin-bottom:12px;">📅</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;margin-bottom:8px;">No exams added yet</div>
+        <div style="color:var(--text2);font-size:13px;margin-bottom:18px;line-height:1.6;">Add your exam dates to start the countdown.<br>You'll see days remaining, urgency levels & more.</div>
+        <button onclick="openExamMgr()" style="background:var(--grad);color:#fff;border:none;border-radius:10px;padding:11px 22px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;">➕ Add Your First Exam</button>
+      </div>`;
+    return;
+  }
+  g.style.display='';
+  const sorted=[...userExams].sort((a,b)=>new Date(a.date)-new Date(b.date));
+  sorted.forEach(e=>{
+    const days=Math.max(0,Math.ceil((new Date(e.date)-new Date())/86400000));
+    let urgencyClass='green', urgencyText='Plenty of time';
+    if(days===0){urgencyClass='red';urgencyText='TODAY!';}
+    else if(days<=3){urgencyClass='red';urgencyText='Very soon!';}
+    else if(days<=14){urgencyClass='orange';urgencyText='Coming up';}
+    const c=document.createElement('div');
+    c.className='cd-card';
+    c.innerHTML=`
+      <button class="cd-del" onclick="deleteExam(${e.id})" title="Remove">×</button>
+      <div style="font-size:22px;margin-bottom:6px;">${e.icon}</div>
+      <div class="cd-exam">${e.name}</div>
+      <div class="cd-num">${days}</div>
+      <div class="cd-unit">days remaining</div>
+      <div class="cd-date">${formatDate(e.date)}</div>
+      <span class="cd-urgency ${urgencyClass}">${urgencyText}</span>
+    `;
+    g.appendChild(c);
+  });
+}
+
+// ══════════════════════════════════════════
+//  EXTRAS
+// ══════════════════════════════════════════
+function buildExtras(){
+  // Countdown (now handled by buildCountdown)
+  buildCountdown();
+  // Seniors
+  const ag=document.getElementById('advGrid');
+  ag.innerHTML='';
+  SENIORS.forEach((s,idx)=>{
+    const c=document.createElement('div');
+    c.className='advice-card';
+    c.innerHTML=`
+      <div class="adv-head">
+        <div class="adv-avatar" style="background:linear-gradient(135deg,${s.color}99,${s.color}44)">${s.initials}</div>
+        <div><div style="display:flex;align-items:center;"><div class="adv-name">${s.name}</div><span class="verified" title="Verified Senior">✓</span></div>
+        <div class="adv-role">${s.year}</div><div class="adv-college">🏫 ${s.college}</div></div>
+      </div>
+      <div class="adv-badges">
+        <span class="adv-badge" style="background:rgba(62,207,142,.12);color:var(--success);">⭐ ${s.cgpa} CGPA</span>
+        <span class="adv-badge" style="background:rgba(56,189,248,.12);color:var(--accent3);">🏢 ${s.placed}</span>
+      </div>
+      <div class="adv-text">&#8220;${s.text}&#8221;</div>
+      <div class="adv-foot">
+        <button class="like-btn" id="lb-${idx}" onclick="likeAdvice(${idx})">❤️ Helpful</button>
+        <span class="like-count" id="lc-${idx}">${s.likes} found this helpful</span>
+      </div>`;
+    ag.appendChild(c);
+  });
+}
+
+function likeAdvice(idx){
+  if(likedSet.has(idx)){showToast('Already liked!','');return;}
+  likedSet.add(idx);
+  SENIORS[idx].likes++;
+  document.getElementById(`lc-${idx}`).textContent=SENIORS[idx].likes+' found this helpful';
+  const btn=document.getElementById(`lb-${idx}`);
+  btn.style.color='var(--danger)';btn.style.borderColor='var(--danger)';
+  showToast('❤️ Marked as helpful','success');
+}
+
+// ══════════════════════════════════════════
+//  QUOTES
+// ══════════════════════════════════════════
+function newQuote(){
+  qIdx=Math.floor(Math.random()*QUOTES.length);
+  const q=QUOTES[qIdx];
+  ['hQuote','eQuote'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=`"${q.t}"`;});
+  ['hQuoteBy','eQuoteBy'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=`— ${q.a}`;});
+}
+
+// ══════════════════════════════════════════
+//  RESOURCE MODAL
+// ══════════════════════════════════════════
+function openResModal(code,name){
+  const ress=SUBJ_RESOURCES[code]||SUBJ_RESOURCES.default;
+  document.getElementById('resModalTitle').textContent=`📚 ${name}`;
+  const ul=document.getElementById('resModalList');
+  ul.innerHTML='';
+  ress.forEach(r=>{
+    const li=document.createElement('li');
+    li.innerHTML=`<span class="rli-icon">${r.icon}</span><div class="rli-info"><div class="rli-name">${r.name}</div><div class="rli-url" onclick="window.open('${r.url}','_blank')">${r.url}</div></div><span class="rli-tag">${r.tag}</span>`;
+    ul.appendChild(li);
+  });
+  document.getElementById('resModal').classList.add('open');
+}
+function closeResModal(){document.getElementById('resModal').classList.remove('open');}
+function handleResModalClick(e){if(e.target.id==='resModal')closeResModal();}
+
+// ══════════════════════════════════════════
+//  DROPDOWN
+// ══════════════════════════════════════════
+function toggleDd(e){
+  e.stopPropagation();
+  const dd=document.getElementById('userDd');
+  const ch=document.getElementById('chevron');
+  dd.classList.toggle('open');
+  ch.classList.toggle('open');
+}
+function closeDd(){
+  document.getElementById('userDd').classList.remove('open');
+  document.getElementById('chevron').classList.remove('open');
+}
+document.addEventListener('click',closeDd);
+
+// ══════════════════════════════════════════
+//  SETTINGS
+// ══════════════════════════════════════════
+function openSettings(){
+  closeDd();
+  document.getElementById('togDark').checked=document.documentElement.getAttribute('data-theme')==='dark';
+  document.getElementById('panelOverlay').classList.add('open');
+  document.getElementById('settingsPanel').classList.add('open');
+}
+function closeSettings(){
+  document.getElementById('panelOverlay').classList.remove('open');
+  document.getElementById('settingsPanel').classList.remove('open');
+}
+function applyThemeSetting(){
+  const dark=document.getElementById('togDark').checked;
+  document.documentElement.setAttribute('data-theme',dark?'dark':'light');
+  document.getElementById('themeBtn').textContent=dark?'🌙':'🌞';
+}
+function applyFont(v){document.body.style.fontSize=v+'px';}
+function resetProg(){
+  if(!confirm('Reset ALL topic progress? Cannot be undone.'))return;
+  Object.keys(progress).forEach(c=>Object.keys(progress[c]).forEach(t=>progress[c][t]=false));
+  totalXP=0;buildSubjects();updateStats();closeSettings();showToast('🔄 Progress reset.','');
+}
+
+// ══════════════════════════════════════════
+//  EDIT PROFILE
+// ══════════════════════════════════════════
+function openEditProfile(){
+  closeDd();closeSettings();
+  document.getElementById('ep-name').value=user.name;
+  document.getElementById('ep-email').value=user.email;
+  document.getElementById('ep-roll').value=user.roll;
+  document.getElementById('ep-college').value=user.college;
+  document.getElementById('ep-branch').value=user.branch;
+  document.getElementById('ep-sem').value=user.sem;
+  document.getElementById('editModal').classList.add('open');
+}
+function closeEditModal(){document.getElementById('editModal').classList.remove('open');}
+function handleEditModalClick(e){if(e.target.id==='editModal')closeEditModal();}
+function saveProfile(){
+  const name=document.getElementById('ep-name').value.trim();
+  if(!name){showToast('⚠️ Name cannot be empty','err');return;}
+  const branchChanged=document.getElementById('ep-branch').value!==user.branch;
+  user.name=name;user.email=document.getElementById('ep-email').value;
+  user.roll=document.getElementById('ep-roll').value;user.college=document.getElementById('ep-college').value;
+  user.branch=document.getElementById('ep-branch').value;user.sem=parseInt(document.getElementById('ep-sem').value);
+  const fn=name.split(' ')[0];
+  document.getElementById('navAv').textContent=fn[0].toUpperCase();
+  document.getElementById('navName').textContent=fn;
+  document.getElementById('ddAv').textContent=fn[0].toUpperCase();
+  document.getElementById('ddName').textContent=name;
+  document.getElementById('ddInfo').textContent=user.branch+' • Sem '+user.sem;
+  document.getElementById('heroBranch').textContent='⚡ '+user.branch+' BRANCH';
+  if(branchChanged){initProgress();buildRoadmap();buildCareer();}
+  closeEditModal();showToast('✅ Profile updated!','success');
+}
+
+// ══════════════════════════════════════════
+//  LOGOUT & DELETE
+// ══════════════════════════════════════════
+function confirmLogout(){closeDd();closeSettings();document.getElementById('logoutConfirm').classList.add('open');}
+function confirmDelete(){closeDd();closeSettings();document.getElementById('deleteConfirm').classList.add('open');}
+function closeConfirm(id){document.getElementById(id).classList.remove('open');}
+function doLogout(){
+  document.getElementById('logoutConfirm').classList.remove('open');
+  document.getElementById('mainApp').classList.remove('active');
+  ['su-name','su-email','su-roll','su-college','li-email'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('su-branch').value='';document.getElementById('su-sem').value='';
+  progress={};totalXP=0;userExams=[];examIdCounter=1;
+  switchAuth('login');
+  document.getElementById('signupPage').classList.add('active');
+  showToast('👋 Logged out successfully!','');
+}
+function doDelete(){
+  document.getElementById('deleteConfirm').classList.remove('open');
+  document.getElementById('mainApp').classList.remove('active');
+  progress={};totalXP=0;userExams=[];examIdCounter=1;
+  user={name:'',email:'',branch:'CSE',sem:1,roll:'',college:'',isNew:true};
+  // Remove this user from saved accounts
+  const accs = JSON.parse(localStorage.getItem('fr_accounts') || '[]');
+  const filtered = accs.filter(a => a.email !== user.email);
+  localStorage.setItem('fr_accounts', JSON.stringify(filtered));
+  ['su-name','su-email','su-roll','su-college','li-email'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('su-branch').value='';document.getElementById('su-sem').value='';
+  switchAuth('login');
+  document.getElementById('signupPage').classList.add('active');
+  showToast('🗑️ Account deleted permanently.','err');
+}
+
+// ══════════════════════════════════════════
+//  THEME TOGGLE
+// ══════════════════════════════════════════
+function toggleTheme(){
+  const d=document.documentElement.getAttribute('data-theme')==='dark';
+  document.documentElement.setAttribute('data-theme',d?'light':'dark');
+  document.getElementById('themeBtn').textContent=d?'🌞':'🌙';
+}
+
+// ══════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════
+function showToast(msg,type){
+  const ex=document.querySelector('.toast');if(ex)ex.remove();
+  const t=document.createElement('div');
+  t.className=`toast ${type}`;t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(16px)';t.style.transition='all .3s';setTimeout(()=>t.remove(),300);},2800);
+}
+</script>
+</body>
+</html>
